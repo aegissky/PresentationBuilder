@@ -2,6 +2,7 @@
 type: PROJECT_LOCAL
 project_code: PresentationBuilder
 created: 2026-05-09
+updated: 2026-05-13
 owner: admin
 aegis_root: D:\aegis
 ---
@@ -11,12 +12,26 @@ aegis_root: D:\aegis
 > SELECTIVE-SYNC 적용 — 미기재 항목은 상위 계층에서 탐색
 > 탐색 순서: CLAUDE_local.md → D:\aegis\CLAUDE.md → ~/.claude/CLAUDE.md
 
+## §1. 프로젝트 선언 (PROJECT-GOVERNANCE 필수)
+
+| 키 | 값 |
+|----|-----|
+| **ENV_STAGE** | `deploy` (배포본 — `D:\git-deploy\PresentationBuilder`) |
+| **NET_TYPE** | `INTERNET` (Google Fonts CDN 사용) |
+| **CDN_ALLOWED** | `true` (Noto Sans KR — fonts.googleapis.com) |
+| **자체완결** | `true` — `_scripts/*.ps1`은 `$PSScriptRoot` 기반 BuilderRoot 자동 감지 |
+
+> **CLOSED 망 배포 시**: `_GUIDE/SKILL.md` §4-1의 Google Fonts `<link>`를 로컬 Noto Sans KR 자산으로 교체 필요.
+> 자세한 정책: [`DEPLOYMENT-POLICY.md`](DEPLOYMENT-POLICY.md)
+
 ## 프로젝트 개요
 
-- **목적**: AI 기반 발표 자료 자동 생성 도구
-- **스택**: HTML · CSS · JS · TTS
+- **목적**: AI 기반 발표 자료 자동 생성 도구 (범용·자체완결)
+- **스택**: HTML · CSS · JS · TTS · PowerShell 5.1+
 - **로컬 스킬**: `_GUIDE/SKILL.md` (최우선)
-- **루트**: `D:\projects\products\PresentationBuilder\`
+- **루트 (자체완결)**: `$PSScriptRoot` 기반 자동 감지 — 어디로 clone해도 동작
+- **개발 SSOT**: `D:\projects\products\PresentationBuilder\` (Anthropic 환경)
+- **배포본**: `D:\git-deploy\PresentationBuilder\` ↔ `github.com/aegissky/PresentationBuilder`
 
 ## 상속 구조
 

@@ -13,7 +13,7 @@
     7. _input/ 빈 폴더 + 사용자 안내
 
 .PARAMETER Name
-  새 PPT 폴더 이름. D:\projects\products\<Name> 으로 생성.
+  새 PPT 폴더 이름. <OutputRoot>\<Name> 으로 생성 (OutputRoot 기본 = BuilderRoot 부모).
 
 .PARAMETER Project
   프로젝트 유형 — kickoff / proposal / business-plan / interim / completion / education / ir-pitch
@@ -27,11 +27,18 @@
 .PARAMETER Duration
   총 발표 시간(분). 미지정 시 프로젝트 매니페스트의 duration_range 중간값 사용.
 
-.EXAMPLE
-  .\new-presentation.ps1 -Name FooReport -Project kickoff -Org "ACME" -Duration 30
+.PARAMETER BuilderRoot
+  PresentationBuilder 루트 경로. 미지정 시 본 스크립트의 부모 디렉터리(자체완결, $PSScriptRoot 기반).
+
+.PARAMETER OutputRoot
+  새 PPT가 생성될 부모 디렉터리. 미지정 시 BuilderRoot의 부모(배포본의 형제 위치).
 
 .EXAMPLE
-  .\new-presentation.ps1 -Name IRPitch2026 -Project ir-pitch -Theme charcoal
+  .\new-presentation.ps1 -Name FooReport -Project kickoff -Org "ACME" -Duration 30
+  # → BuilderRoot 자동 감지 + 형제 위치에 FooReport 생성
+
+.EXAMPLE
+  .\new-presentation.ps1 -Name PitchDeck -Project ir-pitch -Theme charcoal -OutputRoot D:\presentations
 #>
 [CmdletBinding()]
 param(
@@ -43,17 +50,20 @@ param(
   [string]$Theme,
   [string]$Org = "",
   [int]$Duration = 0,
-  [string]$ProductsRoot = "D:\projects\products",
+  [string]$BuilderRoot,
+  [string]$OutputRoot,
   [switch]$Force
 )
 
 $ErrorActionPreference = 'Stop'
 
-$BuilderRoot = Join-Path $ProductsRoot 'PresentationBuilder'
-$Target      = Join-Path $ProductsRoot $Name
+# PB-DEPLOY §2.1: 자체완결 — $PSScriptRoot 기반 자동 감지.
+if (-not $BuilderRoot) { $BuilderRoot = Split-Path $PSScriptRoot -Parent }
+if (-not $OutputRoot)  { $OutputRoot  = Split-Path $BuilderRoot -Parent }
+$Target = Join-Path $OutputRoot $Name
 
-if (-not (Test-Path $BuilderRoot)) {
-  throw "PresentationBuilder 루트 없음: $BuilderRoot"
+if (-not (Test-Path (Join-Path $BuilderRoot '_core'))) {
+  throw "BuilderRoot에 _core 디렉터리 없음: $BuilderRoot (-BuilderRoot 명시 필요)"
 }
 if ($BuilderRoot -eq $Target) {
   throw "Builder 자체에 부트스트랩 금지 (self-bootstrap)."
@@ -164,7 +174,7 @@ owner: admin
 ## 상속 계층
 - L0  D:\aegis\core\constitution\
 - L1  D:\aegis\base\
-- L2  D:\projects\products\$Name\
+- L2  $Target\
 
 ## 상속 선언
 - 전역 헌법 전부 적용

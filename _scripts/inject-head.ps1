@@ -37,12 +37,15 @@
 param(
   [Parameter(Mandatory=$true)][string]$SlideFile,
   [string]$PresRoot,
-  [string]$BuilderRoot = "D:\projects\products\PresentationBuilder",
+  [string]$BuilderRoot,
   [switch]$DryRun,
   [switch]$Force
 )
 
 $ErrorActionPreference = 'Stop'
+
+# PB-DEPLOY §2.1: 자체완결 — $PSScriptRoot 기반.
+if (-not $BuilderRoot) { $BuilderRoot = Split-Path $PSScriptRoot -Parent }
 
 if (-not (Test-Path $SlideFile)) { throw "슬라이드 파일 없음: $SlideFile" }
 $SlideFile = (Resolve-Path $SlideFile).Path

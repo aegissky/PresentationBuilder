@@ -28,11 +28,14 @@
 [CmdletBinding()]
 param(
   [string]$Target,
-  [string]$BuilderRoot = "D:\projects\products\PresentationBuilder",
+  [string]$BuilderRoot,
   [switch]$FailOnDrift
 )
 
 $ErrorActionPreference = 'Stop'
+
+# PB-DEPLOY §2.1: 자체완결 — $PSScriptRoot 기반.
+if (-not $BuilderRoot) { $BuilderRoot = Split-Path $PSScriptRoot -Parent }
 
 $manifestPath = Join-Path $BuilderRoot '_core\MANIFEST.json'
 if (-not (Test-Path $manifestPath)) {
