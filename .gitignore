@@ -1,0 +1,54 @@
+# ─────────────────────────────────────────────
+# PresentationBuilder — .gitignore
+# ─────────────────────────────────────────────
+
+# ── 사용자 입력 데이터 ──────────────────────
+# _input/ 폴더 구조는 유지하되 실제 콘텐츠 제외
+_input/01_documents/*
+_input/02_images/*
+_input/03_data/*
+!_input/01_documents/.gitkeep
+!_input/02_images/.gitkeep
+!_input/03_data/.gitkeep
+
+# ── 프로젝트별 설정 파일 ────────────────────
+# 템플릿(pres-config.template.json)은 커밋,
+# 실제 프로젝트 설정 파일은 제외
+pres-config.json
+
+# ── TTS 녹음 파일 (생성 산출물) ─────────────
+TTS/audio/*
+!TTS/audio/.gitkeep
+
+# ── 자동 생성 발표 슬라이드 HTML ────────────
+# 숫자-숫자 패턴 (01-1.html, 02-5-8.html 등)
+[0-9][0-9]-*.html
+
+# ── 자동 생성 폴더 (발표별 산출물) ──────────
+business/*
+!business/.gitkeep
+md/*
+!md/.gitkeep
+
+# ── 자동 생성 발표 스크립트 ─────────────────
+# script-text/ 의 pageId.md 파일 (자동 생성)
+script-text/*.md
+!script-text/README.md
+
+# ── 로컬 환경 전용 파일 ─────────────────────
+.sync_baseline.json
+
+# ── CLAUDE 로컬 설정 ─────────────────────────
+.claude/settings.local.json
+
+# ── OS / 에디터 임시 파일 ───────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# ── Node / npm (향후 빌드 도입 시 대비) ──────
+node_modules/
+npm-debug.log*

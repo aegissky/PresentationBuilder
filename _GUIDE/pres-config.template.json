@@ -1,0 +1,105 @@
+{
+  "_comment": "이 파일을 pres-config.json으로 복사 후 수정하세요. _comment 키는 삭제해도 됩니다.",
+
+  "project": {
+    "name": "프로젝트 이름",
+    "org": "조직명 / 회사명",
+    "sub_org": "부서명 (선택)",
+    "date": "YYYY-MM-DD",
+    "version": "1.0",
+    "theme": "navy",
+    "_theme_options": ["navy", "forest", "charcoal"],
+    "defaultFitMode": "fluid",
+    "_fitMode_options": ["fluid", "frame"]
+  },
+
+  "brief": {
+    "type": "착수보고",
+    "_type_examples": ["착수보고", "제안서", "사업계획서", "중간보고", "완료보고", "교육자료", "IR피치덱"],
+
+    "audience": "임원",
+    "_audience_examples": ["임원", "실무자", "고객사", "투자자", "일반청중"],
+
+    "tone": "공식·신뢰감",
+    "_tone_examples": [
+      "공식·신뢰감 — 정중하고 격식 있는 비즈니스 문체",
+      "전문·간결 — 핵심만 압축, 군더더기 없음",
+      "친근·설득 — 쉬운 언어, 공감 중심",
+      "역동·자신감 — 강한 어조, 성과 강조",
+      "학술·분석 — 데이터 중심, 논리적 전개"
+    ],
+
+    "difficulty": "중",
+    "_difficulty_options": ["하 — 쉬운 용어, 배경 설명 포함", "중 — 업계 용어 허용, 중간 수준", "상 — 전문 용어 자유, 상세 기술"],
+
+    "duration": 30,
+    "_duration_comment": "총 발표 시간 (분). 페이지당 권장 소요 시간 자동 배분",
+
+    "keywords": ["키워드1", "키워드2", "키워드3"],
+    "_keywords_comment": "강조할 핵심 단어 또는 메시지"
+  },
+
+  "toc": {
+    "_comment": "목차 구성. 비워두면 CLAUDE가 자료 분석 후 자동 제안",
+    "auto": false,
+    "sections": [
+      {
+        "id": "01",
+        "title": "섹션 1 제목",
+        "pages": [
+          { "id": "01-1", "title": "페이지 제목", "layout": "L02", "duration": 60 },
+          { "id": "01-2", "title": "페이지 제목", "layout": "L03", "duration": 45 }
+        ]
+      },
+      {
+        "id": "02",
+        "title": "섹션 2 제목",
+        "pages": [
+          { "id": "02-1", "title": "페이지 제목", "layout": "L07", "duration": 60 }
+        ]
+      }
+    ],
+    "_layout_guide": {
+      "L01": "표지 — 전체폭 히어로",
+      "L02": "헤더 + 1단 본문",
+      "L03": "헤더 + 2열 그리드",
+      "L04": "헤더 + 3열 그리드",
+      "L05": "헤더 + 4열 그리드",
+      "L06": "KPI 파노라마 (숫자 강조)",
+      "L07": "AS-IS / TO-BE 비교",
+      "L08": "타임라인·단계",
+      "L09": "시나리오 카드 그리드",
+      "L10": "비교 테이블",
+      "L11": "아키텍처 다이어그램",
+      "L12": "흐름도·프로세스",
+      "L13": "목차 TOC",
+      "L99": "자유 그리드"
+    }
+  },
+
+  "style": {
+    "opening": "질문형",
+    "_opening_options": ["질문형 — 문제 제기로 시작", "현황형 — 배경·현황 설명", "결론형 — 핵심 결론 먼저", "스토리형 — 사례·에피소드로 시작"],
+
+    "emphasis": "수치·비교",
+    "_emphasis_options": ["수치·비교 — 숫자로 설득", "사례·증거 — 실제 사례 중심", "비전·미래 — 방향성·가능성 강조", "문제·해결 — 페인포인트 → 솔루션"],
+
+    "closing": "행동요청",
+    "_closing_options": ["행동요청 — 다음 단계·승인 요청", "요약 — 핵심 3가지 정리", "비전 — 미래 그림으로 마무리", "감사 — 협조 감사 + 질의응답"]
+  },
+
+  "features": {
+    "tts": true,
+    "tts_autoplay": false,
+    "edit_mode": true,
+    "tip_memo": true,
+    "script_viewer": true,
+    "standalone_entry": true,
+    "custom_audio": false
+  },
+
+  "output": {
+    "path": "D:/projects/products/[새프로젝트폴더명]",
+    "overwrite": false
+  }
+}

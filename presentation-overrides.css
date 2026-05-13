@@ -1,0 +1,660 @@
+/* ============================================================
+   모드별 오버라이드 — 편집 / 프리젠테이션 (page00 전용 v3)
+   적용: <html data-mode="edit"> 또는 <html data-mode="presentation">
+   원칙: 콘텐츠는 transform 으로 축소하지 않고, 폭/패딩/간격을 줄이고
+         글자 크기는 키워서 가독성을 유지함
+   ============================================================ */
+
+/* ─── 발표 전용: 편집 도구막대 / 팝오버 / TIP UI / 사이드 패널 숨김 ─── */
+[data-mode="presentation"] .kr-toolbar,
+[data-mode="presentation"] .kr-popover,
+[data-mode="presentation"] .tipmemo-indicator,
+[data-mode="presentation"] .tipmemo-add-btn,
+[data-mode="presentation"] .tipmemo-popover,
+[data-mode="presentation"] #sa-panel,
+[data-mode="presentation"] #sa-tab {
+    display: none !important;
+}
+/* ─── 공통: 페이지 푸터(.pf)만 비활성화 — 헤더(.bk-nav)는 인라인으로 엣지 크기 고정 ─── */
+html[data-mode="edit"] nav.pf,
+html[data-mode="edit"] .pf,
+html[data-mode="edit"] .page-foot,
+html[data-mode="presentation"] nav.pf,
+html[data-mode="presentation"] .pf,
+html[data-mode="presentation"] .page-foot {
+    display: none !important;
+}
+
+/* ─── 스크롤바 숨김 (스크롤은 가능하되 보이지 않음) ─── */
+/* [INSTR 2026-04-28] 1단계: overflow-x:hidden / max-width:100vw 제거 — 원본 크기 그대로, 가로 넘치면 스크롤 허용 */
+html[data-mode="edit"],
+html[data-mode="edit"] body,
+html[data-mode="presentation"],
+html[data-mode="presentation"] body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+html[data-mode="edit"] body::-webkit-scrollbar,
+html[data-mode="presentation"] body::-webkit-scrollbar,
+html[data-mode="edit"]::-webkit-scrollbar,
+html[data-mode="presentation"]::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* ─── 상단 10px 엣지 스트립 ─── 인라인으로 이동 (각 sub HTML <head>의 anti-flicker 블록 참조)
+   이유: 외부 CSS 의존 시 페이지 전환 깜박임 발생 → 인라인화로 paint 전 적용 보장 */
+
+/* ============================================================
+   ⚡ 컴팩트 레이아웃 + 큰 글자 — page00 클래스 기준
+   원칙: 콘텐츠 폭/높이는 줄이고 글자는 키워 가독성 확보
+   ============================================================ */
+
+/* [INSTR 2026-04-28] vfit 블록은 파일 맨 끝으로 이동 — 다른 shorthand padding 오버라이드보다 뒤에 와야 적용됨 */
+html[data-mode="edit"],
+html[data-mode="presentation"] { --vfit-k: 1; }
+
+/* 본문 컨테이너 — 폭/패딩 축소 */
+html[data-mode="edit"] .bk-page,
+html[data-mode="presentation"] .bk-page {
+    max-width: 1320px;
+    padding: 22px 32px 24px !important;
+    box-sizing: border-box;
+}
+
+/* 페이지 헤더 — 위 여백·아래 여백 축소 */
+html[data-mode="edit"] .bk-hd,
+html[data-mode="presentation"] .bk-hd {
+    margin-bottom: 18px !important;
+    padding-bottom: 12px !important;
+}
+html[data-mode="edit"] .bk-hd h1,
+html[data-mode="presentation"] .bk-hd h1 {
+    font-size: 30px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 4px !important;
+}
+html[data-mode="edit"] .bk-hd .eye,
+html[data-mode="presentation"] .bk-hd .eye {
+    font-size: 12px !important;
+    margin-bottom: 6px !important;
+}
+html[data-mode="edit"] .bk-hd .sub,
+html[data-mode="presentation"] .bk-hd .sub {
+    font-size: 16px !important;
+    line-height: 1.45 !important;
+}
+
+/* 섹션 타이틀 — 위/아래 여백 축소, 글자 키움 */
+html[data-mode="edit"] .bk-sec,
+html[data-mode="presentation"] .bk-sec,
+html[data-mode="edit"] .bk-st,
+html[data-mode="presentation"] .bk-st {
+    margin: 18px 0 10px !important;
+}
+html[data-mode="edit"] .bk-sec h2,
+html[data-mode="presentation"] .bk-sec h2,
+html[data-mode="edit"] .bk-st h2,
+html[data-mode="presentation"] .bk-st h2 {
+    font-size: 20px !important;
+}
+html[data-mode="edit"] .bk-sec .tag,
+html[data-mode="presentation"] .bk-sec .tag,
+html[data-mode="edit"] .bk-st .tag,
+html[data-mode="presentation"] .bk-st .tag {
+    font-size: 11px !important;
+}
+
+/* 카드 (.card / .pcard / .bk-card) — 패딩 축소, 글자 키움 */
+html[data-mode="edit"] .card,
+html[data-mode="presentation"] .card,
+html[data-mode="edit"] .pcard,
+html[data-mode="presentation"] .pcard,
+html[data-mode="edit"] .bk-card,
+html[data-mode="presentation"] .bk-card {
+    padding: 14px 16px !important;
+}
+html[data-mode="edit"] .card h3,
+html[data-mode="presentation"] .card h3,
+html[data-mode="edit"] .pcard h3,
+html[data-mode="presentation"] .pcard h3,
+html[data-mode="edit"] .bk-card h3,
+html[data-mode="presentation"] .bk-card h3 {
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+    padding-bottom: 6px !important;
+}
+html[data-mode="edit"] .card ul li,
+html[data-mode="presentation"] .card ul li,
+html[data-mode="edit"] .pcard ul li,
+html[data-mode="presentation"] .pcard ul li,
+html[data-mode="edit"] .bk-card ul li,
+html[data-mode="presentation"] .bk-card ul li {
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+    padding: 3px 0 3px 14px !important;
+}
+html[data-mode="edit"] .card .tag,
+html[data-mode="presentation"] .card .tag,
+html[data-mode="edit"] .pcard .tag,
+html[data-mode="presentation"] .pcard .tag,
+html[data-mode="edit"] .bk-card .tag,
+html[data-mode="presentation"] .bk-card .tag {
+    font-size: 10px !important;
+}
+
+/* 그리드 간격 — 빡빡하게 */
+html[data-mode="edit"] .g2,
+html[data-mode="presentation"] .g2,
+html[data-mode="edit"] .g3,
+html[data-mode="presentation"] .g3,
+html[data-mode="edit"] .g4,
+html[data-mode="presentation"] .g4,
+html[data-mode="edit"] .grid-2,
+html[data-mode="presentation"] .grid-2,
+html[data-mode="edit"] .grid-3,
+html[data-mode="presentation"] .grid-3,
+html[data-mode="edit"] .grid-4,
+html[data-mode="presentation"] .grid-4 {
+    gap: 12px !important;
+}
+
+/* pstrip (가로 스트립) — 컴팩트 + 큰 글자 */
+html[data-mode="edit"] .pstrip,
+html[data-mode="presentation"] .pstrip {
+    gap: 8px !important;
+}
+html[data-mode="edit"] .pstrip .pi,
+html[data-mode="presentation"] .pstrip .pi {
+    padding: 12px 14px !important;
+}
+html[data-mode="edit"] .pstrip .pn,
+html[data-mode="presentation"] .pstrip .pn {
+    font-size: 22px !important;
+}
+html[data-mode="edit"] .pstrip .pt,
+html[data-mode="presentation"] .pstrip .pt {
+    font-size: 15px !important;
+    margin: 4px 0 !important;
+}
+html[data-mode="edit"] .pstrip .pd,
+html[data-mode="presentation"] .pstrip .pd {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+}
+
+/* 노트 / 안내 박스 */
+html[data-mode="edit"] .note,
+html[data-mode="presentation"] .note,
+html[data-mode="edit"] .notice,
+html[data-mode="presentation"] .notice {
+    padding: 12px 16px !important;
+    margin: 12px 0 !important;
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+}
+html[data-mode="edit"] .note .t,
+html[data-mode="presentation"] .note .t,
+html[data-mode="edit"] .notice .title,
+html[data-mode="presentation"] .notice .title {
+    font-size: 12px !important;
+    margin-bottom: 4px !important;
+}
+
+/* 표 (.bk-table / table.data) — 컴팩트 */
+html[data-mode="edit"] table.data,
+html[data-mode="presentation"] table.data,
+html[data-mode="edit"] .bk-table,
+html[data-mode="presentation"] .bk-table {
+    font-size: 13px !important;
+}
+html[data-mode="edit"] table.data thead th,
+html[data-mode="presentation"] table.data thead th,
+html[data-mode="edit"] table.data tbody td,
+html[data-mode="presentation"] table.data tbody td {
+    padding: 7px 10px !important;
+}
+
+/* TOC (목차) 페이지 — index.html : 공통 폰트 스케일 적용 */
+html[data-mode="edit"] .cover,
+html[data-mode="presentation"] .cover {
+    padding: 28px 40px 28px !important;
+}
+html[data-mode="edit"] .cover::before,
+html[data-mode="presentation"] .cover::before {
+    top: 28px !important;
+    height: 70px !important;
+}
+html[data-mode="edit"] .cover h1,
+html[data-mode="presentation"] .cover h1 {
+    font-size: 38px !important;
+    line-height: 1.18 !important;
+    margin-bottom: 6px !important;
+}
+html[data-mode="edit"] .cover .eye,
+html[data-mode="presentation"] .cover .eye {
+    font-size: 12px !important;
+    margin-bottom: 8px !important;
+    letter-spacing: 5px !important;
+}
+html[data-mode="edit"] .cover .sub,
+html[data-mode="presentation"] .cover .sub {
+    font-size: 14px !important;
+    margin-top: 10px !important;
+}
+
+/* [INSTR 2026-04-28] main.bk-page / div.bk-page 가로 폭 통일 — 32px 좌우 패딩 (다른 화면과 동일) */
+html[data-mode="edit"] main.bk-page,
+html[data-mode="presentation"] main.bk-page {
+    padding: 22px 32px 28px !important;
+}
+
+/* 목차 헤더 (.sec-blk) */
+html[data-mode="edit"] .sec-blk,
+html[data-mode="presentation"] .sec-blk {
+    margin: 12px 0 10px !important;
+}
+html[data-mode="edit"] .sec-blk h2.label,
+html[data-mode="presentation"] .sec-blk h2.label {
+    font-size: 12px !important;
+    margin-bottom: 6px !important;
+}
+html[data-mode="edit"] .sec-blk .hd,
+html[data-mode="presentation"] .sec-blk .hd {
+    font-size: 24px !important;
+    margin-bottom: 14px !important;
+    padding-bottom: 12px !important;
+}
+
+/* 목차 행 */
+html[data-mode="edit"] .toc-row,
+html[data-mode="presentation"] .toc-row {
+    margin-bottom: 12px !important;
+    gap: 18px !important;
+    align-items: center !important;
+}
+html[data-mode="edit"] .toc-marker,
+html[data-mode="presentation"] .toc-marker {
+    height: 88px !important;
+    padding: 10px !important;
+    width: 170px !important;
+    min-width: 170px !important;
+    gap: 4px !important;
+}
+html[data-mode="edit"] .toc-marker .roman,
+html[data-mode="presentation"] .toc-marker .roman {
+    font-size: 26px !important;
+}
+html[data-mode="edit"] .toc-marker .mname,
+html[data-mode="presentation"] .toc-marker .mname {
+    font-size: 13px !important;
+}
+html[data-mode="edit"] .toc-sub-label,
+html[data-mode="presentation"] .toc-sub-label {
+    font-size: 12px !important;
+    margin-bottom: 6px !important;
+}
+html[data-mode="edit"] .toc-items,
+html[data-mode="presentation"] .toc-items {
+    line-height: 1.8 !important;
+}
+html[data-mode="edit"] .toc-items li,
+html[data-mode="presentation"] .toc-items li {
+    font-size: 14px !important;
+    line-height: 1.8 !important;
+    margin-bottom: 0 !important;
+    padding: 2px 0 2px 10px !important;
+}
+
+/* 목차 페이지의 .bk-hd가 있으면 줄임 */
+html[data-mode="edit"] .bk-page > .bk-hd,
+html[data-mode="presentation"] .bk-page > .bk-hd {
+    margin-bottom: 10px !important;
+    padding-bottom: 8px !important;
+}
+
+/* 공통 본문 글자 — 약간 키움 */
+html[data-mode="edit"] body,
+html[data-mode="presentation"] body {
+    font-size: 15px !important;
+    line-height: 1.65 !important;
+}
+
+/* 첫 본문(.bk-page) 상단 패딩 — 엣지 스트립(10px) + 안전여백 */
+html[data-mode="edit"] .bk-page,
+html[data-mode="presentation"] .bk-page,
+html[data-mode="edit"] main.bk-page,
+html[data-mode="presentation"] main.bk-page {
+    padding-top: 22px !important;
+}
+
+/* ─── 편집 가능 outline / 마커 ─── */
+[data-mode="presentation"] body.kr-edit-mode::before {
+    /* 발표 모드에서는 편집 ON 인디케이터(주황 배지) 비활성 */
+}
+[data-mode="presentation"] [data-eid].kr-edited {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding-left: 0 !important;
+}
+[data-mode="presentation"] [contenteditable="true"] {
+    outline: none !important;
+    background: transparent !important;
+}
+[data-mode="presentation"] [data-eid] {
+    cursor: default !important;
+    user-select: text;
+}
+[data-mode="presentation"] body.kr-edit-mode [data-eid]:hover:not([contenteditable="true"]) {
+    background: transparent !important;
+    cursor: default !important;
+}
+
+/* 발표 모드 좌·우 클릭 영역 시각적 힌트 (옵션 — 매우 옅게) */
+[data-mode="presentation"] body::after {
+    content: '';
+    position: fixed;
+    pointer-events: none;
+    bottom: 0; left: 0; right: 0;
+    height: 0;
+}
+
+/* 페이지 전환 시 부드러운 효과 */
+[data-mode="presentation"] .bk-page,
+[data-mode="presentation"] .page-wrap {
+    animation: pres-fade-in .22s ease-out;
+}
+@keyframes pres-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   [INSTR 2026-04-28] 세로 자동 맞춤(vfit) — 통합 블록 (파일 맨 끝, 우선순위 보장)
+   --vfit-k 는 fit-viewport.js 가 0.55~1.35 로 설정.
+   대상: 세로 padding/margin/gap + 폰트 사이즈 + line-height 모두 비례 스케일
+   원칙: 가로 폭/패딩은 미변경 (균형 유지)
+   ============================================================ */
+
+/* ─── 본문 글자 (모드 진입 시 15px 기준) ─── */
+html[data-mode="edit"] body,
+html[data-mode="presentation"] body {
+    font-size: calc(15px * var(--vfit-k)) !important;
+    line-height: calc(1.65 * var(--vfit-k, 1)) !important;
+}
+
+/* ─── 페이지 컨테이너 상하 패딩 (가로는 32px 유지)
+   --vfit-pad-top: 화면보다 콘텐츠가 짧을 때 위/아래 균등 여백을 위한 추가 상단 패딩 ─── */
+html[data-mode="edit"] .bk-page,
+html[data-mode="presentation"] .bk-page,
+html[data-mode="edit"] main.bk-page,
+html[data-mode="presentation"] main.bk-page {
+    padding-top: calc(22px * var(--vfit-k) + var(--vfit-pad-top, 0px)) !important;
+    padding-bottom: calc(28px * var(--vfit-k)) !important;
+}
+
+/* ─── 타이틀(.bk-hd) ─── */
+html[data-mode="edit"] .bk-hd,
+html[data-mode="presentation"] .bk-hd {
+    margin-bottom: calc(18px * var(--vfit-k)) !important;
+    padding-bottom: calc(12px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .bk-hd h1,
+html[data-mode="presentation"] .bk-hd h1 {
+    font-size: calc(30px * var(--vfit-k)) !important;
+    line-height: calc(1.2 * var(--vfit-k, 1)) !important;
+    margin-bottom: calc(4px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .bk-hd .eye,
+html[data-mode="presentation"] .bk-hd .eye {
+    font-size: calc(12px * var(--vfit-k)) !important;
+    margin-bottom: calc(6px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .bk-hd .sub,
+html[data-mode="presentation"] .bk-hd .sub {
+    font-size: calc(16px * var(--vfit-k)) !important;
+    line-height: calc(1.45 * var(--vfit-k, 1)) !important;
+}
+
+/* ─── 섹션 타이틀 ─── */
+html[data-mode="edit"] .bk-sec,
+html[data-mode="presentation"] .bk-sec,
+html[data-mode="edit"] .bk-st,
+html[data-mode="presentation"] .bk-st {
+    margin: calc(18px * var(--vfit-k)) 0 calc(10px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .bk-sec h2,
+html[data-mode="presentation"] .bk-sec h2,
+html[data-mode="edit"] .bk-st h2,
+html[data-mode="presentation"] .bk-st h2 {
+    font-size: calc(20px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .bk-sec .tag,
+html[data-mode="presentation"] .bk-sec .tag,
+html[data-mode="edit"] .bk-st .tag,
+html[data-mode="presentation"] .bk-st .tag {
+    font-size: calc(11px * var(--vfit-k)) !important;
+}
+
+/* ─── 카드(.card / .pcard / .bk-card) ─── */
+html[data-mode="edit"] .card,
+html[data-mode="presentation"] .card,
+html[data-mode="edit"] .pcard,
+html[data-mode="presentation"] .pcard,
+html[data-mode="edit"] .bk-card,
+html[data-mode="presentation"] .bk-card {
+    padding-top: calc(14px * var(--vfit-k)) !important;
+    padding-bottom: calc(14px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .card h3,
+html[data-mode="presentation"] .card h3,
+html[data-mode="edit"] .pcard h3,
+html[data-mode="presentation"] .pcard h3,
+html[data-mode="edit"] .bk-card h3,
+html[data-mode="presentation"] .bk-card h3 {
+    font-size: calc(16px * var(--vfit-k)) !important;
+    margin-bottom: calc(8px * var(--vfit-k)) !important;
+    padding-bottom: calc(6px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .card ul li,
+html[data-mode="presentation"] .card ul li,
+html[data-mode="edit"] .pcard ul li,
+html[data-mode="presentation"] .pcard ul li,
+html[data-mode="edit"] .bk-card ul li,
+html[data-mode="presentation"] .bk-card ul li {
+    font-size: calc(14px * var(--vfit-k)) !important;
+    line-height: calc(1.55 * var(--vfit-k, 1)) !important;
+    padding-top: calc(3px * var(--vfit-k)) !important;
+    padding-bottom: calc(3px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .card .tag,
+html[data-mode="presentation"] .card .tag,
+html[data-mode="edit"] .pcard .tag,
+html[data-mode="presentation"] .pcard .tag,
+html[data-mode="edit"] .bk-card .tag,
+html[data-mode="presentation"] .bk-card .tag {
+    font-size: calc(10px * var(--vfit-k)) !important;
+}
+
+/* ─── 그리드 행간 ─── */
+html[data-mode="edit"] .g2,
+html[data-mode="presentation"] .g2,
+html[data-mode="edit"] .g3,
+html[data-mode="presentation"] .g3,
+html[data-mode="edit"] .g4,
+html[data-mode="presentation"] .g4,
+html[data-mode="edit"] .grid-2,
+html[data-mode="presentation"] .grid-2,
+html[data-mode="edit"] .grid-3,
+html[data-mode="presentation"] .grid-3,
+html[data-mode="edit"] .grid-4,
+html[data-mode="presentation"] .grid-4 {
+    row-gap: calc(12px * var(--vfit-k)) !important;
+}
+
+/* ─── 표(.bk-table / table.data) ─── */
+html[data-mode="edit"] table.data,
+html[data-mode="presentation"] table.data,
+html[data-mode="edit"] .bk-table,
+html[data-mode="presentation"] .bk-table {
+    font-size: calc(13px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] table.data thead th,
+html[data-mode="presentation"] table.data thead th,
+html[data-mode="edit"] table.data tbody td,
+html[data-mode="presentation"] table.data tbody td,
+html[data-mode="edit"] .bk-table th,
+html[data-mode="presentation"] .bk-table th,
+html[data-mode="edit"] .bk-table td,
+html[data-mode="presentation"] .bk-table td {
+    padding-top: calc(7px * var(--vfit-k)) !important;
+    padding-bottom: calc(7px * var(--vfit-k)) !important;
+}
+
+/* ─── 노트/안내 박스 ─── */
+html[data-mode="edit"] .note,
+html[data-mode="presentation"] .note,
+html[data-mode="edit"] .notice,
+html[data-mode="presentation"] .notice {
+    font-size: calc(14px * var(--vfit-k)) !important;
+    line-height: calc(1.55 * var(--vfit-k, 1)) !important;
+    padding-top: calc(12px * var(--vfit-k)) !important;
+    padding-bottom: calc(12px * var(--vfit-k)) !important;
+    margin-top: calc(12px * var(--vfit-k)) !important;
+    margin-bottom: calc(12px * var(--vfit-k)) !important;
+}
+
+/* ─── pstrip ─── */
+html[data-mode="edit"] .pstrip .pi,
+html[data-mode="presentation"] .pstrip .pi {
+    padding-top: calc(12px * var(--vfit-k)) !important;
+    padding-bottom: calc(12px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .pstrip .pn,
+html[data-mode="presentation"] .pstrip .pn {
+    font-size: calc(22px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .pstrip .pt,
+html[data-mode="presentation"] .pstrip .pt {
+    font-size: calc(15px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .pstrip .pd,
+html[data-mode="presentation"] .pstrip .pd {
+    font-size: calc(13px * var(--vfit-k)) !important;
+    line-height: calc(1.5 * var(--vfit-k, 1)) !important;
+}
+
+/* ─── 01-2-1 매트릭스(.mx) ─── */
+html[data-mode="edit"] .mx,
+html[data-mode="presentation"] .mx {
+    row-gap: calc(10px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .mx-hd,
+html[data-mode="presentation"] .mx-hd {
+    font-size: calc(12px * var(--vfit-k)) !important;
+    padding-top: calc(9px * var(--vfit-k)) !important;
+    padding-bottom: calc(9px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .mx-sub,
+html[data-mode="presentation"] .mx-sub {
+    font-size: calc(11px * var(--vfit-k)) !important;
+    padding-top: calc(5px * var(--vfit-k)) !important;
+    padding-bottom: calc(5px * var(--vfit-k)) !important;
+    margin-top: calc(8px * var(--vfit-k)) !important;
+    margin-bottom: calc(4px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .mx-items,
+html[data-mode="presentation"] .mx-items {
+    font-size: calc(11px * var(--vfit-k)) !important;
+    line-height: calc(1.9 * var(--vfit-k, 1)) !important;
+    padding-top: calc(4px * var(--vfit-k)) !important;
+    padding-bottom: calc(10px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .mx-items:first-of-type,
+html[data-mode="presentation"] .mx-items:first-of-type,
+html[data-mode="edit"] .mx-items:last-of-type,
+html[data-mode="presentation"] .mx-items:last-of-type {
+    min-height: calc(96px * var(--vfit-k)) !important;
+}
+
+/* ─── 01-2-1 단계 비교(.steps) ─── */
+html[data-mode="edit"] .steps,
+html[data-mode="presentation"] .steps {
+    row-gap: calc(10px * var(--vfit-k)) !important;
+    margin-bottom: calc(10px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .step-row,
+html[data-mode="presentation"] .step-row {
+    font-size: calc(11px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .step-row .lbl,
+html[data-mode="presentation"] .step-row .lbl {
+    padding-top: calc(8px * var(--vfit-k)) !important;
+    padding-bottom: calc(8px * var(--vfit-k)) !important;
+}
+html[data-mode="edit"] .step-row .body,
+html[data-mode="presentation"] .step-row .body {
+    font-size: calc(11px * var(--vfit-k)) !important;
+    line-height: calc(1.5 * var(--vfit-k, 1)) !important;
+    padding-top: calc(6px * var(--vfit-k)) !important;
+    padding-bottom: calc(6px * var(--vfit-k)) !important;
+}
+/* ============================================================
+   /vfit
+   ============================================================ */
+
+/* ============================================================
+   [INSTR 2026-04-28] Frame Mode — html[data-fit-mode="frame"]
+   상단 영역(타이틀·서브·인트로·섹션라벨) 위치 고정, 본문(카드/표/그리드)만 vfit-k 적용
+   ============================================================ */
+html[data-fit-mode="frame"] .bk-page,
+html[data-fit-mode="frame"] main.bk-page {
+    padding-top: 22px !important;
+    --vfit-pad-top: 0px !important;
+}
+html[data-fit-mode="frame"] body {
+    font-size: 15px !important;
+    line-height: 1.65 !important;
+}
+html[data-fit-mode="frame"] .bk-hd {
+    margin-bottom: 18px !important;
+    padding-bottom: 12px !important;
+}
+html[data-fit-mode="frame"] .bk-hd h1 {
+    font-size: 30px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 4px !important;
+}
+html[data-fit-mode="frame"] .bk-hd .eye {
+    font-size: 12px !important;
+    margin-bottom: 6px !important;
+}
+html[data-fit-mode="frame"] .bk-hd .sub {
+    font-size: 16px !important;
+    line-height: 1.45 !important;
+}
+html[data-fit-mode="frame"] .note,
+html[data-fit-mode="frame"] .notice {
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    margin-top: 12px !important;
+    margin-bottom: 12px !important;
+}
+html[data-fit-mode="frame"] .bk-sec,
+html[data-fit-mode="frame"] .bk-st {
+    margin: 18px 0 10px !important;
+}
+html[data-fit-mode="frame"] .bk-sec h2,
+html[data-fit-mode="frame"] .bk-st h2 {
+    font-size: 20px !important;
+}
+html[data-fit-mode="frame"] .bk-sec .tag,
+html[data-fit-mode="frame"] .bk-st .tag {
+    font-size: 11px !important;
+}
+/* ============================================================
+   /Frame Mode
+   ============================================================ */

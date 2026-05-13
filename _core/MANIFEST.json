@@ -1,0 +1,106 @@
+﻿{
+    "schema_version":  "1.0",
+    "core_version":  "2026.05.13",
+    "generated_at":  "2026-05-13T03:40:40Z",
+    "generated_by":  "update after W18+W19+W20 dev applied",
+    "policy":  "SSOT = PresentationBuilder.",
+    "assets":  [
+                   {
+                       "path":  "_core/css/content-frame.css",
+                       "sha256":  "d30d80568d7529006b467704e12e8923427becce9f0a3093faa07f98a8c5e4fe",
+                       "size":  2766,
+                       "updated":  "2026-04-30"
+                   },
+                   {
+                       "path":  "_core/css/mode-tip.css",
+                       "sha256":  "4fbaa6cd879b362e3078e6544fd29baede925bf8a0dd58a76ac2a8f5a1ec35b2",
+                       "size":  14331,
+                       "updated":  "2026-04-30"
+                   },
+                   {
+                       "path":  "_core/css/presentation-overrides.css",
+                       "sha256":  "66dcb41fca01d751fa4beaa40a7306776274320f38bd77494cfa46af6c23735c",
+                       "size":  23421,
+                       "updated":  "2026-04-30"
+                   },
+                   {
+                       "path":  "_core/css/theme-ai.css",
+                       "sha256":  "e2fde50342fae61d9020e39cbdbe4e4182a28c630c716d8127c0d7ee02273c7f",
+                       "size":  17016,
+                       "updated":  "2026-04-30"
+                   },
+                   {
+                       "path":  "_core/js/features/editor.js",
+                       "sha256":  "0a284defd537930408b52e29188898842df13a963c55b9601a93d9c5a3955fbf",
+                       "size":  14635,
+                       "updated":  "2026-04-30"
+                   },
+                   {
+                       "path":  "_core/js/features/fit-viewport.js",
+                       "sha256":  "a724de537764004fe1dca7c8027c1848d7aa8e2ec67ccd567be3e090add48b8d",
+                       "size":  12141,
+                       "updated":  "2026-04-30"
+                   },
+                   {
+                       "path":  "_core/js/features/memo.js",
+                       "sha256":  "fe2b599401ef6419a95399a018a7abedbc956df401740ae0a3afe24c4854a27a",
+                       "size":  20408,
+                       "updated":  "2026-04-30"
+                   },
+                   {
+                       "path":  "_core/js/features/mode-selector.js",
+                       "sha256":  "ac2f8b84c62a1927193e0032c9cb53ea1be1d9df4e1be6e827d3e56fd04cc7c5",
+                       "size":  25076,
+                       "updated":  "2026-05-13"
+                   },
+                   {
+                       "path":  "_core/js/features/site-actions.js",
+                       "sha256":  "75331d7c1a0f7e9cf6beb8acfc4b85f5355f8a43744d64f48c5284301aaa52a4",
+                       "size":  22757,
+                       "updated":  "2026-05-13"
+                   },
+                   {
+                       "path":  "_core/js/features/spa-link.js",
+                       "sha256":  "a191131e0a602f981ccf07e2930c8a34c61d905fbd03af6ba0c8299962a3f50f",
+                       "size":  1572,
+                       "updated":  "2026-04-30"
+                   },
+                   {
+                       "path":  "_core/js/features/theme.js",
+                       "sha256":  "4e3176cfcfd64be86c3eb22697d0945d8b4d317be8552bb61647b0559e5a3568",
+                       "size":  4082,
+                       "updated":  "2026-04-30"
+                   },
+                   {
+                       "path":  "_core/js/features/theme-ai.js",
+                       "sha256":  "298252388ccdea8ab2eb3d2236dfd9cfe2a27f1f83902d47ea40eed9b67b077b",
+                       "size":  3555,
+                       "updated":  "2026-04-30"
+                   },
+                   {
+                       "path":  "_core/js/lib/_sync_check.js",
+                       "sha256":  "68618a6c53143adcc462608d0eb252b82a5240648d08da00f3576398dbbf6155",
+                       "size":  1854,
+                       "updated":  "2026-04-30"
+                   },
+                   {
+                       "path":  "_core/js/lib/page-meta-check.js",
+                       "sha256":  "9ed8044bcc43cf4e310a0ae1c3b9d59624e2f2bb052cb4f848cbbff07fcea9e7",
+                       "size":  2838,
+                       "updated":  "2026-05-13"
+                   }
+               ],
+    "compatibility":  {
+                          "min_pres_config_schema":  "1.0",
+                          "browser":  [
+                                          "chromium \u003e= 110",
+                                          "firefox \u003e= 110",
+                                          "safari \u003e= 16"
+                                      ]
+                      },
+    "notes":  [
+                  "W18: _scripts/inject-head.ps1 — 슬라이드에 표준 헤드 슬롯 자동 주입",
+                  "W19: inject-head이 pres-config.json features.* 토글 인식, false인 feature 제외",
+                  "W20: _core/js/lib/page-meta-check.js — 브라우저 콘솔 PresPageMeta.check() 검증"
+              ]
+}

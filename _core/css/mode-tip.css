@@ -1,0 +1,607 @@
+/* ============================================================
+   모드 선택 다이얼로그 + TIP 메모 시스템 스타일
+   prefix: mode-* (다이얼로그)  /  tipmemo-* (TIP)
+   ============================================================ */
+
+/* ─────── 모드 선택 다이얼로그 ─────── */
+.mode-dialog-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(17, 30, 53, 0.88);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: mode-fade-in .2s ease-out;
+}
+
+@keyframes mode-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.mode-dialog {
+    background: #fff;
+    width: 100%;
+    max-width: 720px;
+    padding: 48px 48px 40px;
+    position: relative;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    animation: mode-pop .25s cubic-bezier(.2,.9,.3,1.1);
+    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+}
+
+@keyframes mode-pop {
+    from { transform: translateY(20px) scale(.96); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.mode-dialog .mode-eye {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--accent-600, #F05A20);
+    margin-bottom: 10px;
+}
+
+.mode-dialog h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--primary-900, #111E35);
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+    line-height: 1.25;
+}
+
+.mode-dialog .mode-sub {
+    font-size: 13px;
+    color: var(--secondary-700, #6A7888);
+    margin-bottom: 28px;
+}
+
+.mode-dialog .mode-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.mode-dialog .mode-card {
+    border: 1px solid var(--secondary-300, #BEC8D2);
+    background: #fff;
+    padding: 28px 24px 24px;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+    position: relative;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+
+.mode-dialog .mode-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-900, #111E35);
+    box-shadow: 0 8px 24px rgba(17, 30, 53, 0.18);
+}
+
+.mode-dialog .mode-card.mode-edit {
+    border-top: 4px solid var(--primary-700, #1E3560);
+}
+
+.mode-dialog .mode-card.mode-pres {
+    border-top: 4px solid var(--accent-600, #F05A20);
+}
+
+.mode-dialog .mc-icon {
+    font-size: 32px;
+    line-height: 1;
+    color: var(--primary-900, #111E35);
+    margin-bottom: 14px;
+}
+
+.mode-dialog .mode-card.mode-pres .mc-icon {
+    color: var(--accent-600, #F05A20);
+}
+
+.mode-dialog .mode-card h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--primary-900, #111E35);
+    margin-bottom: 6px;
+    border: none;
+    padding: 0;
+}
+
+.mode-dialog .mode-card > p {
+    font-size: 12px;
+    color: var(--secondary-700, #6A7888);
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+
+.mode-dialog .mode-card ul {
+    list-style: none;
+    margin-bottom: 18px;
+    padding: 0;
+}
+
+.mode-dialog .mode-card li {
+    font-size: 12px;
+    color: var(--primary-900, #111E35);
+    padding: 4px 0 4px 14px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.mode-dialog .mode-card li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    color: var(--accent-600, #F05A20);
+    font-weight: 700;
+}
+
+.mode-dialog .mc-cta {
+    display: inline-block;
+    padding: 8px 18px;
+    background: var(--primary-900, #111E35);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.mode-dialog .mode-card.mode-pres .mc-cta {
+    background: var(--accent-600, #F05A20);
+}
+
+.mode-dialog .mode-card:hover .mc-cta {
+    background: var(--accent-600, #F05A20);
+}
+
+.mode-dialog .mode-card.mode-pres:hover .mc-cta {
+    background: var(--primary-900, #111E35);
+}
+
+.mode-dialog .mode-auto {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--secondary-700, #6A7888);
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 10px;
+    border: 1px dashed var(--secondary-300, #BEC8D2);
+}
+
+.mode-dialog .mode-auto input {
+    accent-color: var(--accent-600, #F05A20);
+}
+
+.mode-dialog .mode-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--secondary-500, #8A9DB5);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color .15s, border-color .15s;
+}
+
+.mode-dialog .mode-close:hover {
+    color: var(--accent-600, #F05A20);
+    border-color: var(--accent-600, #F05A20);
+}
+
+@media (max-width: 600px) {
+    .mode-dialog { padding: 32px 24px 28px; }
+    .mode-dialog .mode-cards { grid-template-columns: 1fr; }
+    .mode-dialog h2 { font-size: 22px; }
+}
+
+/* ─────── 모드 토글 버튼 (kr-toolbar 내) ─────── */
+.kr-toolbar .mode-toggle-btn.mode-pres-on {
+    background: var(--accent-600, #F05A20);
+    color: #fff;
+    border-color: var(--accent-600, #F05A20);
+}
+
+/* ─────── 단축키 도움말 ─────── */
+.mode-help {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(17, 30, 53, 0.7);
+    z-index: 99998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: mode-fade-in .15s;
+}
+
+.mode-help .mh-card {
+    background: var(--primary-900, #111E35);
+    color: #fff;
+    padding: 32px 36px;
+    min-width: 340px;
+    box-shadow: 0 12px 36px rgba(0,0,0,.3);
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.mode-help .mh-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent-600, #F05A20);
+    margin-bottom: 18px;
+}
+
+.mode-help table {
+    width: 100%;
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+.mode-help td {
+    padding: 6px 12px 6px 0;
+    line-height: 1.5;
+}
+
+.mode-help td:first-child {
+    font-family: 'Consolas', monospace;
+    color: var(--accent-600, #F05A20);
+    font-weight: 700;
+    white-space: nowrap;
+    width: 50%;
+}
+
+.mode-help .mh-close {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff;
+    padding: 8px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.mode-help .mh-close:hover {
+    border-color: var(--accent-600, #F05A20);
+    color: var(--accent-600, #F05A20);
+}
+
+/* ─────── TIP 메모 인디케이터 ─────── */
+.tipmemo-indicator,
+.tipmemo-add-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-600, #F05A20);
+    background: #FFD93D;
+    color: var(--primary-900, #111E35);
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: transform .15s, box-shadow .15s;
+}
+
+.tipmemo-indicator:hover,
+.tipmemo-add-btn:hover {
+    transform: scale(1.15);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tipmemo-indicator.priority-high {
+    background: var(--accent-600, #F05A20);
+    color: #fff;
+    border-color: var(--accent-600, #F05A20);
+    animation: tip-pulse 2s ease-in-out infinite;
+}
+
+@keyframes tip-pulse {
+    0%, 100% { box-shadow: 0 2px 8px rgba(240, 90, 32, 0.4); }
+    50% { box-shadow: 0 2px 16px rgba(240, 90, 32, 0.8); }
+}
+
+.tipmemo-indicator.priority-low {
+    background: var(--secondary-300, #BEC8D2);
+    border-color: var(--secondary-700, #6A7888);
+    color: var(--primary-900, #111E35);
+    opacity: 0.85;
+}
+
+.tipmemo-add-btn {
+    background: #fff;
+    color: var(--accent-600, #F05A20);
+    border: 2px dashed var(--accent-600, #F05A20);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+}
+
+[data-tipframe="1"]:hover .tipmemo-add-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* [INSTR 2026-04-29] 편집 ON 모드 — frame 호버 시 클릭 가능 시각 피드백 */
+body.kr-edit-mode [data-tipframe="1"]:hover {
+    outline: 2px dashed var(--accent-600, #F05A20);
+    outline-offset: 2px;
+    cursor: pointer;
+}
+body.kr-edit-mode [data-tipframe="1"] [data-eid]:hover {
+    outline: none;
+}
+
+/* ─────── TIP 메모 팝오버 ─────── */
+.tipmemo-popover {
+    position: absolute;
+    z-index: 9500;
+    background: #fff;
+    border: 1px solid var(--primary-700, #1E3560);
+    box-shadow: 0 8px 24px rgba(0, 51, 141, 0.18);
+    padding: 14px 16px;
+    width: 320px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--primary-900, #111E35);
+}
+
+.tipmemo-popover .tm-hd {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary-900, #111E35);
+}
+
+.tipmemo-popover .tm-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--primary-900, #111E35);
+    letter-spacing: 1px;
+}
+
+.tipmemo-popover .tm-close {
+    background: transparent;
+    border: none;
+    color: var(--secondary-700, #6A7888);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 6px;
+}
+
+.tipmemo-popover .tm-close:hover {
+    color: var(--accent-600, #F05A20);
+}
+
+.tipmemo-popover .tm-text {
+    width: 100%;
+    min-height: 90px;
+    border: 1px solid var(--secondary-300, #BEC8D2);
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--primary-900, #111E35);
+    resize: vertical;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.tipmemo-popover .tm-text:focus {
+    outline: 2px solid var(--accent-600, #F05A20);
+    outline-offset: -2px;
+    border-color: var(--accent-600, #F05A20);
+}
+
+.tipmemo-popover .tm-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.tipmemo-popover .tm-lbl {
+    font-weight: 700;
+    color: var(--secondary-700, #6A7888);
+    font-size: 11px;
+    width: 56px;
+    flex-shrink: 0;
+}
+
+.tipmemo-popover .tm-pr {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.tipmemo-popover .tm-pr input {
+    accent-color: var(--accent-600, #F05A20);
+}
+
+.tipmemo-popover .tm-author {
+    flex: 1;
+    border: 1px solid var(--secondary-300, #BEC8D2);
+    padding: 5px 8px;
+    font-size: 12px;
+    font-family: inherit;
+}
+
+.tipmemo-popover .tm-author:focus {
+    outline: 1px solid var(--accent-600, #F05A20);
+    border-color: var(--accent-600, #F05A20);
+}
+
+.tipmemo-popover .tm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--secondary-200, #E8EDF4);
+}
+
+.tipmemo-popover .tm-actions button {
+    padding: 6px 14px;
+    border: 1px solid var(--secondary-300, #BEC8D2);
+    background: #fff;
+    color: var(--primary-900, #111E35);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+}
+
+.tipmemo-popover .tm-actions button:hover {
+    border-color: var(--primary-900, #111E35);
+}
+
+.tipmemo-popover .tm-save {
+    background: var(--accent-600, #F05A20) !important;
+    color: #fff !important;
+    border-color: var(--accent-600, #F05A20) !important;
+}
+
+.tipmemo-popover .tm-save:hover {
+    background: var(--primary-900, #111E35) !important;
+    border-color: var(--primary-900, #111E35) !important;
+}
+
+.tipmemo-popover .tm-del {
+    color: #C00000 !important;
+    border-color: #C00000 !important;
+    margin-right: auto;
+}
+
+.tipmemo-popover .tm-del:hover {
+    background: #C00000 !important;
+    color: #fff !important;
+}
+
+/* ─────── 우하단 모드 초기화 아이콘 (회색·흐리게 → 클릭 시 목록으로) ─────── */
+#mode-reset-btn {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid #B5BAC3;
+    background: rgba(245, 245, 245, 0.6);
+    color: #8A8F99;
+    cursor: pointer;
+    z-index: 9996;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    opacity: 0.30;
+    transition: opacity .2s, background .2s, color .2s, transform .35s, border-color .2s;
+    padding: 0;
+}
+
+#mode-reset-btn:hover {
+    opacity: 0.92;
+    background: #6A7888;
+    color: #fff;
+    border-color: #6A7888;
+    transform: rotate(-180deg);
+}
+
+#mode-reset-btn:focus-visible {
+    outline: 1px solid #8A8F99;
+    outline-offset: 2px;
+    opacity: 0.85;
+}
+
+#mode-reset-btn svg {
+    display: block;
+    pointer-events: none;
+}
+
+/* 프리젠테이션 모드 — 더더욱 흐리게 (발표 중 방해 최소) */
+[data-mode="presentation"] #mode-reset-btn {
+    opacity: 0.18;
+}
+[data-mode="presentation"] #mode-reset-btn:hover {
+    opacity: 0.85;
+}
+
+/* ─────── 우하단 편집 초기화 아이콘 (편집 ON 일 때만 노출) ─────── */
+#edit-reset-btn {
+    position: fixed;
+    right: 42px; /* mode-reset-btn 왼쪽에 배치 */
+    bottom: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid #FFC0B0;
+    background: rgba(255, 245, 240, 0.85);
+    color: #C0392B;
+    cursor: pointer;
+    z-index: 9996;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    opacity: 0.55;
+    transition: opacity .2s, background .2s, color .2s, transform .25s, border-color .2s;
+    padding: 0;
+}
+
+#edit-reset-btn:hover {
+    opacity: 1;
+    background: #C0392B;
+    color: #fff;
+    border-color: #C0392B;
+    transform: scale(1.1);
+}
+
+#edit-reset-btn:focus-visible {
+    outline: 1px solid #C0392B;
+    outline-offset: 2px;
+    opacity: 1;
+}
+
+#edit-reset-btn svg {
+    display: block;
+    pointer-events: none;
+}
+
+/* ─────── 프린트 시 메모 숨김 ─────── */
+@media print {
+    .mode-dialog-overlay,
+    .mode-help,
+    .tipmemo-indicator,
+    .tipmemo-add-btn,
+    .tipmemo-popover,
+    #mode-reset-btn {
+        display: none !important;
+    }
+}

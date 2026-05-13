@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "_comment": "프로젝트 템플릿 뼈대. 각 project_type 폴더(kickoff, proposal, ...)에 manifest.json으로 복제 후 채움.",
+  "project_type": "{project_type_id}",
+  "display_name": "{화면 표시명}",
+  "duration_range": [0, 0],
+  "page_range": [0, 0],
+  "default_theme": "navy",
+  "recommended_themes": ["navy"],
+  "default_audience": "",
+  "default_tone": "",
+  "default_emphasis": [],
+  "sections": [
+    {
+      "id": "00",
+      "title": "Cover",
+      "pages": [
+        { "id": "00", "title": "표지", "layout": "L01", "content_types": [], "duration_sec": 0 }
+      ]
+    }
+  ],
+  "style": {
+    "opening": "",
+    "emphasis": "",
+    "closing": ""
+  }
+}

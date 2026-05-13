@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "project_type": "education",
+  "display_name": "교육자료",
+  "duration_range": [30, 120],
+  "page_range": [20, 80],
+  "default_theme": "forest",
+  "recommended_themes": ["forest", "navy"],
+  "default_audience": "",
+  "default_tone": "",
+  "default_emphasis": [],
+  "sections": [
+    { "id": "00", "title": "Cover",
+      "pages": [{ "id": "00", "title": "표지", "layout": "L01", "duration_sec": 0 }] },
+    { "id": "99", "title": "Closing",
+      "pages": [{ "id": "99", "title": "마무리", "layout": "L01", "duration_sec": 0 }] }
+  ],
+  "style": { "opening": "", "emphasis": "", "closing": "" }
+}

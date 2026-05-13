@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="navy">
+<head>
+<meta charset="UTF-8">
+<script>
+/* [INSTR 2026-04-28] index01.html 전용 — 진입 즉시 발표 모드 + Frame 핏 모드 자동 활성화
+   localStorage 에 저장해 서브 페이지(iframe) 도 동일 환경으로 진입 */
+(function(){
+  try {
+    localStorage.setItem('kickoff-mode', 'presentation');
+    localStorage.setItem('kickoff-fit-mode', 'frame');
+    document.documentElement.setAttribute('data-mode', 'presentation');
+    document.documentElement.setAttribute('data-fit-mode', 'frame');
+  } catch(e) {}
+})();
+/* SPA 셸: iframe 안에서 로드되었다면 부모에 TOC 표시 요청 + 자기 자신은 숨김 (서브페이지의 "목차로" 클릭 처리) */
+(function(){
+  if (window.top !== window.self) {
+    try { window.parent.postMessage({type:'kickoff-show-toc'}, '*'); } catch(_) {}
+    document.documentElement.style.visibility = 'hidden';
+  }
+})();
+</script>
+<style id="anti-flicker">
+/* 깜박임 방지 — html 배경 미리 설정 + body 페이드인 */
+html{background:#F4F7FC}
+[data-theme="forest"] html, html[data-theme="forest"]{background:#F4F6F2}
+[data-theme="charcoal"] html, html[data-theme="charcoal"]{background:#F5F3EF}
+</style><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>발표 모드 — {프로젝트명}</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="navy"]{
+  --bk-nav:#19355D;--bk-deep:#00338D;--bk-mid:#275291;--bk-slate:#3271AA;
+  --bk-muted:#6685BB;--bk-bright:#1760E8;--bk-pale:#C1D6ED;--bk-tint:#E0EDF8;
+  --bk-bg:#F4F7FC;--bk-white:#FFFFFF;--bk-text:#0F1A2E;--bk-sub:#475569;
+  --bk-orange:#FF5300;--bk-orange-bg:rgba(255,83,0,.07);
+  --bk-green:#92D050;--bk-red:#C00000;--bk-shadow:rgba(0,51,141,.13);
+}
+[data-theme="forest"]{
+  --bk-nav:#1F3A2E;--bk-deep:#2F4F3E;--bk-mid:#3F6550;--bk-slate:#507A60;
+  --bk-muted:#7B9D88;--bk-bright:#2E7D52;--bk-pale:#C6CCC2;--bk-tint:#E6EAE3;
+  --bk-bg:#F4F6F2;--bk-white:#FFFFFF;--bk-text:#1A2B1F;
+  --bk-orange:#C89B3C;--bk-orange-bg:rgba(200,155,60,.08);
+  --bk-green:#7EC234;--bk-red:#B5433A;--bk-shadow:rgba(31,58,46,.12);
+}
+[data-theme="charcoal"]{
+  --bk-nav:#2B2B2B;--bk-deep:#1A1A1A;--bk-mid:#3E3E3E;--bk-slate:#555;
+  --bk-muted:#8A8680;--bk-bright:#3E3E3E;--bk-pale:#CBC6BF;--bk-tint:#E8E5E0;
+  --bk-bg:#F5F3EF;--bk-white:#FFFFFF;--bk-text:#1A1A1A;
+  --bk-orange:#A83232;--bk-orange-bg:rgba(168,50,50,.07);
+  --bk-green:#5A8A3A;--bk-red:#8B0000;--bk-shadow:rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bk-bg);color:var(--bk-text);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;letter-spacing:-.1px}
+.bk-nav{background:var(--bk-nav);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--bk-orange);position:sticky;top:0;z-index:100}
+.bk-nav .brand{font-size:13px;font-weight:700;color:#fff;letter-spacing:.5px}
+.bk-nav .brand span{color:#7AC4E8;margin:0 10px;font-weight:300}
+.bk-nav .home{font-size:12px;font-weight:600;color:#fff;text-decoration:none;padding:6px 16px;border:1px solid rgba(255,255,255,.4);transition:border-color .2s}
+.bk-nav .home:hover{border-color:var(--bk-orange)}
+.bk-page{max-width:1320px;margin:0 auto;padding:24px 40px 32px}
+.bk-hd{margin-bottom:40px;padding-bottom:20px;border-bottom:3px solid var(--bk-deep)}
+.bk-hd .eye{font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--bk-orange);margin-bottom:10px}
+.bk-hd h1{font-size:34px;font-weight:800;color:var(--bk-deep);letter-spacing:-.5px;margin-bottom:8px;line-height:1.25}
+.bk-hd .sub{font-size:15px;color:var(--bk-muted);line-height:1.65}
+.bk-sec{display:flex;align-items:center;gap:12px;margin:44px 0 20px}
+.bk-sec .tag{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--bk-orange);border:1px solid var(--bk-orange);background:var(--bk-orange-bg);padding:3px 10px;flex-shrink:0}
+.bk-sec h2{font-size:19px;font-weight:700;color:var(--bk-deep)}
+.bk-sec .line{flex:1;height:1px;background:var(--bk-pale)}
+.card{background:var(--bk-white);border:1px solid var(--bk-pale);border-top:4px solid var(--bk-bright);padding:22px 20px;box-shadow:3px 3px 12px var(--bk-shadow);transition:transform .2s}
+.card:hover{transform:translateY(-3px)}
+.card.o{border-top-color:var(--bk-orange)}
+.card.d{border-top-color:var(--bk-deep)}
+.card.g{border-top-color:var(--bk-green)}
+.card.r{border-top-color:var(--bk-red)}
+.card.navy{background:var(--bk-nav);border-top-color:var(--bk-orange)}
+.card h3{font-size:15px;font-weight:700;color:var(--bk-deep);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bk-tint)}
+.card.navy h3{color:#fff;border-color:rgba(255,255,255,.15)}
+.card ul{list-style:none;padding:0}
+.card li{font-size:12px;color:var(--bk-slate);padding:5px 0 5px 14px;border-bottom:1px dashed var(--bk-tint);position:relative}
+.card li:last-child{border-bottom:none}
+.card li::before{content:'';position:absolute;left:0;top:12px;width:7px;height:2px;background:var(--bk-bright)}
+.card.navy li{color:rgba(255,255,255,.75)}
+.card.navy li::before{background:var(--bk-orange)}
+.card.o li::before{background:var(--bk-orange)}
+.card.g li::before{background:var(--bk-green)}
+.pcard{background:var(--bk-white);border:1px solid var(--bk-pale);border-left:5px solid var(--bk-bright);padding:20px;box-shadow:3px 3px 12px var(--bk-shadow)}
+.pcard.o{border-left-color:var(--bk-orange)}
+.pcard.d{border-left-color:var(--bk-deep)}
+.pcard.g{border-left-color:var(--bk-green)}
+.pcard .tag{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:2px 8px;margin-bottom:10px;display:inline-block;background:var(--bk-tint);color:var(--bk-bright)}
+.pcard.o .tag{background:var(--bk-orange-bg);color:var(--bk-orange)}
+.pcard h3{font-size:16px;font-weight:700;color:var(--bk-deep);margin-bottom:12px}
+.pcard ul{list-style:none;padding:0}
+.pcard li{font-size:12px;color:var(--bk-slate);padding:6px 0 6px 14px;border-bottom:1px dashed var(--bk-tint);position:relative}
+.pcard li:last-child{border-bottom:none}
+.pcard li::before{content:'';position:absolute;left:0;top:13px;width:7px;height:2px;background:var(--bk-bright)}
+.pcard.o li::before{background:var(--bk-orange)}
+.tb{width:100%;border-collapse:collapse;font-size:13px;box-shadow:0 2px 8px var(--bk-shadow)}
+.tb th{background:var(--bk-deep);color:#fff;padding:10px 14px;font-weight:700;text-align:left;border:1px solid var(--bk-mid)}
+.tb td{padding:10px 14px;border:1px solid var(--bk-pale);color:var(--bk-slate);background:var(--bk-white);vertical-align:top;line-height:1.6}
+.tb tr:nth-child(even) td{background:var(--bk-tint)}
+.tb .lbl{font-weight:700;color:var(--bk-deep);background:var(--bk-bg)!important;white-space:nowrap}
+.tb .hl{color:var(--bk-orange);font-weight:700}
+.tb .ok{color:var(--bk-green);font-weight:700}
+.total td{background:var(--bk-deep)!important;color:#fff!important;font-weight:700}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.pstrip{display:flex;gap:0}
+.pi{flex:1;padding:22px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.15);transition:transform .2s,filter .2s;cursor:default}
+.pi:last-child{border-right:none}
+.pi:hover{filter:brightness(1.1);transform:translateY(-3px)}
+.pi:nth-child(1){background:var(--bk-nav)}
+.pi:nth-child(2){background:var(--bk-deep)}
+.pi:nth-child(3){background:var(--bk-mid)}
+.pi:nth-child(4){background:var(--bk-slate)}
+.pi:nth-child(5){background:var(--bk-orange)}
+.pi .pn{font-size:28px;font-weight:800;color:rgba(255,255,255,.2);line-height:1;margin-bottom:8px}
+.pi .pt{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px}
+.pi .pd{font-size:11px;color:rgba(255,255,255,.65);line-height:1.65}
+.kpi{background:var(--bk-white);border:1px solid var(--bk-pale);border-top:4px solid var(--bk-bright);padding:20px 16px;text-align:center;box-shadow:3px 3px 12px var(--bk-shadow);transition:transform .2s}
+.kpi:hover{transform:translateY(-4px)}
+.kpi.o{border-top-color:var(--bk-orange)}
+.kpi.g{border-top-color:var(--bk-green)}
+.kpi .kn{font-size:36px;font-weight:800;color:var(--bk-bright);line-height:1;margin-bottom:8px;letter-spacing:-1px}
+.kpi.o .kn{color:var(--bk-orange)}
+.kpi.g .kn{color:var(--bk-green)}
+.kpi .kl{font-size:12px;font-weight:700;color:var(--bk-deep);margin-bottom:5px}
+.kpi .ks{font-size:11px;color:var(--bk-muted);line-height:1.6}
+.qcard{background:var(--bk-white);border:1px solid var(--bk-pale);border-left:4px solid var(--bk-bright);padding:22px;box-shadow:3px 3px 12px var(--bk-shadow)}
+.qcard.o{border-left-color:var(--bk-orange)}
+.qcard.g{border-left-color:var(--bk-green)}
+.qcard.d{border-left-color:var(--bk-deep)}
+.qcard h3{font-size:15px;font-weight:700;color:var(--bk-deep);margin-bottom:12px}
+.qcard ul{list-style:none;padding:0}
+.qcard li{font-size:12px;color:var(--bk-slate);padding:5px 0 5px 14px;border-bottom:1px dashed var(--bk-tint);position:relative}
+.qcard li:last-child{border-bottom:none}
+.qcard li::before{content:'';position:absolute;left:0;top:12px;width:6px;height:6px;border-radius:50%;background:var(--bk-bright)}
+.qcard.o li::before{background:var(--bk-orange)}
+.qcard.g li::before{background:var(--bk-green)}
+.qcard.d li::before{background:var(--bk-deep)}
+.mx{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.mx-col{background:var(--bk-white);border:1px solid var(--bk-pale);overflow:hidden;box-shadow:3px 3px 12px var(--bk-shadow)}
+.mx-hd{background:var(--bk-muted);color:#fff;font-size:12px;font-weight:700;padding:9px 12px;text-align:center}
+.mx-sub{background:var(--bk-bright);color:#fff;font-size:11px;font-weight:600;padding:5px 10px;margin:8px 0 4px}
+.mx-items{padding:4px 10px 10px;font-size:11px;color:var(--bk-slate);line-height:1.9}
+.note{background:var(--bk-tint);border-left:4px solid var(--bk-bright);padding:13px 16px;font-size:13px;color:var(--bk-mid);margin:20px 0;line-height:1.7}
+.note.w{border-left-color:var(--bk-orange);background:var(--bk-orange-bg);color:var(--bk-text)}
+.note .t{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;color:var(--bk-bright)}
+.note.w .t{color:var(--bk-orange)}
+.toc-row{display:flex;align-items:center;gap:18px;margin-bottom:14px}
+.toc-marker{width:180px;min-width:180px;height:96px;background:var(--bk-pale);border-radius:6px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.toc-marker .roman{font-size:32px;font-weight:700;color:var(--bk-orange);line-height:1.1;letter-spacing:1px}
+.toc-marker .mname{font-size:16px;font-weight:700;color:#0C53AA;line-height:1.2}
+.toc-right{flex:1}
+.toc-sub-label{font-size:15px;color:var(--bk-muted);margin-bottom:10px;letter-spacing:.3px;font-weight:500}
+.toc-items{list-style:none;padding:0;font-size:17px;color:#023EAC;line-height:1.95;display:grid;grid-template-columns:1fr;gap:6px 0}
+.toc-items li{padding-left:12px;border-left:2px solid var(--bk-pale);margin-bottom:0}
+.toc-items a{color:#023EAC;text-decoration:none;display:block;transition:color .15s,border-left-color .15s}
+.toc-items a:hover{color:var(--bk-orange)}
+.cover{padding:0;position:relative;background:transparent}
+.cover .w{max-width:1320px;margin:0 auto;padding:24px 40px 26px 70px;position:relative;background:var(--bk-nav)}
+.cover .w::before{content:'';position:absolute;left:40px;top:24px;width:4px;height:54px;background:var(--bk-orange)}
+.cover .eye{font-size:12px;font-weight:700;letter-spacing:5px;color:var(--bk-orange);margin-bottom:8px;text-transform:uppercase}
+.cover h1{font-size:42px;font-weight:800;line-height:1.18;letter-spacing:-.5px;margin-bottom:4px;color:#fff}
+.cover h1 span{color:rgba(255,255,255,.5);font-weight:300}
+.cover .sub{font-size:14px;color:rgba(255,255,255,.65);margin-top:8px}
+.sec-blk{margin:14px 0 10px}
+.sec-blk h2.label{font-size:15px;font-weight:700;color:var(--bk-orange);letter-spacing:4px;margin-bottom:10px}
+.sec-blk .hd{font-size:32px;font-weight:800;color:var(--bk-deep);margin-bottom:18px;padding-bottom:16px;border-bottom:2px solid var(--bk-deep);letter-spacing:-.3px}
+.idx{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.ic{background:var(--bk-white);border:1px solid var(--bk-pale);padding:20px 18px;text-decoration:none;display:block;transition:border-color .2s,transform .2s;position:relative;overflow:hidden;box-shadow:3px 3px 12px var(--bk-shadow)}
+.ic::before{content:'';position:absolute;left:0;top:0;width:3px;height:0;background:var(--bk-orange);transition:height .25s}
+.ic:hover::before{height:100%}
+.ic:hover{border-color:var(--bk-deep);transform:translateY(-2px)}
+.ic .no{font-size:11px;font-weight:700;color:var(--bk-orange);letter-spacing:2px;margin-bottom:6px}
+.ic .ttl{font-size:14px;font-weight:700;color:var(--bk-deep);margin-bottom:5px}
+.ic .sub{font-size:11px;color:var(--bk-muted);line-height:1.5}
+.pf{display:flex;align-items:stretch;justify-content:space-between;gap:16px;margin-top:52px;padding-top:28px;border-top:2px solid var(--bk-pale)}
+.pf a{flex:1;display:flex;flex-direction:column;gap:5px;padding:18px 22px;background:var(--bk-white);border:1px solid var(--bk-pale);text-decoration:none;box-shadow:3px 3px 12px var(--bk-shadow);transition:border-color .18s,transform .18s}
+.pf a:hover{border-color:var(--bk-deep);transform:translateY(-2px)}
+.pf a.off{opacity:.3;pointer-events:none}
+.pf a.nx{text-align:right}
+.pf .dir{font-size:10px;font-weight:700;color:var(--bk-orange);letter-spacing:2px;text-transform:uppercase}
+.pf a:not(.nx) .dir::before{content:'← '}
+.pf a.nx .dir::after{content:' →'}
+.pf .ttl{font-size:14px;font-weight:700;color:var(--bk-deep)}
+.pf .sub{font-size:11px;color:var(--bk-muted)}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 9px}
+.badge.new{background:var(--bk-orange-bg);color:var(--bk-orange);border:1px solid var(--bk-orange)}
+.toc-sub-label{font-size:11px;color:var(--bk-muted);margin-bottom:8px;letter-spacing:.3px}
+@media(max-width:768px){
+  .bk-page{padding:32px 18px 48px}
+  .bk-hd h1{font-size:26px}
+  .g2,.g3,.g4,.g5,.mx,.idx{grid-template-columns:1fr}
+  .pstrip{flex-wrap:wrap}
+  .pi{flex:0 0 100%}
+  .toc-row{flex-direction:column}
+  .toc-marker{width:100%;height:60px}
+}
+/* [INSTR 2026-04-28] 목차 위 여백 — presentation-overrides.css 뒤의 별도 style 블록으로 이동 (이 블록은 효과 없음) */
+/* SPA shell — iframe overlay */
+.app-iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--bk-bg);z-index:100;display:none}
+body.iframe-on>.cover,body.iframe-on>main{display:none}
+body.iframe-on .app-iframe{display:block}
+</style>
+<script>
+(function(){try{var m=localStorage.getItem('kickoff-mode');if(m==='edit'||m==='presentation')document.documentElement.setAttribute('data-mode',m);var f=localStorage.getItem('kickoff-fit-mode');if(f==='frame')document.documentElement.setAttribute('data-fit-mode','frame');}catch(e){}})();
+</script>
+<link rel="stylesheet" href="mode-tip.css">
+<link rel="stylesheet" href="presentation-overrides.css">
+<style>
+/* [INSTR 2026-04-28] presentation-overrides.css 뒤에 위치해 vfit 중앙정렬 padding 무시 — cover ↔ 목차 사이 20px 고정 */
+html main.bk-page,
+html[data-mode="edit"] main.bk-page,
+html[data-mode="presentation"] main.bk-page{padding-top:20px!important}
+html .sec-blk:first-of-type,
+html[data-mode="edit"] .sec-blk:first-of-type,
+html[data-mode="presentation"] .sec-blk:first-of-type{margin-top:0!important}
+</style>
+<script defer src="theme.js"></script>
+<script defer src="editor.js"></script>
+<script defer src="mode-selector.js"></script>
+<script defer src="tip-memo.js"></script>
+<script defer src="fit-viewport.js"></script>
+<script defer src="site-actions.js"></script>
+</head>
+<body>
+<div class="cover">
+  <div class="w">
+    <div class="eye" data-eid="cover-eye">{발표 유형} · {연도}</div>
+    <h1 data-eid="cover-h1">{프로젝트명}<br><span>{부제}</span></h1>
+    <div class="sub" data-eid="cover-sub">{키워드1} · {키워드2} · {키워드3}</div>
+  </div>
+</div>
+
+<main class="bk-page">
+
+  <div class="sec-blk">
+    <div class="hd" data-eid="toc-hd">목차</div>
+
+    <div class="toc-row">
+      <div class="toc-marker">
+        <div class="roman" data-eid="toc1-roman">Ⅰ.</div>
+        <div class="mname" data-eid="toc1-mname">사업개요</div>
+      </div>
+      <div class="toc-right">
+        <div class="toc-sub-label" data-eid="toc1-sublabel">추진 배경 · 사업 범위 · 기대 효과</div>
+        <ul class="toc-items">
+          <li data-eid="toc1-item1"><a href="01-1.html">1.1 추진배경 및 목적</a></li>
+          <li data-eid="toc1-item2"><a href="01-2.html">1.2 사업범위 · 구축 범위</a></li>
+          <li data-eid="toc1-item3"><a href="01-3.html">1.3 기대효과</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="toc-row">
+      <div class="toc-marker">
+        <div class="roman" data-eid="toc2-roman">Ⅱ.</div>
+        <div class="mname" data-eid="toc2-mname">사업수행 방안</div>
+      </div>
+      <div class="toc-right">
+        <div class="toc-sub-label" data-eid="toc2-sublabel">시스템 구성 · 고도화 방향 · 인프라 · 연계 · 서비스 · 시연</div>
+        <ul class="toc-items">
+          <li data-eid="toc2-item1"><a href="02-1.html">2.1 시스템 구성</a></li>
+          <li data-eid="toc2-item2"><a href="02-2.html">2.2 고도화 방향</a></li>
+          <li data-eid="toc2-item3"><a href="02-3.html">2.3 인프라 — 서버·HA/DR</a></li>
+          <li data-eid="toc2-item4"><a href="02-4.html">2.4 연계 — 프레임워크·내부</a></li>
+          <li data-eid="toc2-item5"><a href="02-5.html">2.5 서비스 — 표준·요구사항</a></li>
+          <li data-eid="toc2-item6"><a href="02-6.html">2.6 시연 · 순서</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="toc-row">
+      <div class="toc-marker">
+        <div class="roman" data-eid="toc3-roman">Ⅲ.</div>
+        <div class="mname" data-eid="toc3-mname">사업관리 방안</div>
+      </div>
+      <div class="toc-right">
+        <div class="toc-sub-label" data-eid="toc3-sublabel">추진 조직 · 추진 일정 · 보고 및 소통 체계</div>
+        <ul class="toc-items">
+          <li data-eid="toc3-item1"><a href="03-1.html">3.1 추진 조직</a></li>
+          <li data-eid="toc3-item1-1"><a href="03-1-1.html">3.1.1 역할 분담</a></li>
+          <li data-eid="toc3-item1-2"><a href="03-1-2.html">3.1.2 비상 연락망·커뮤니케이션</a></li>
+          <li data-eid="toc3-item2"><a href="03-2.html">3.2 추진 일정</a></li>
+          <li data-eid="toc3-item3"><a href="03-3.html">3.3 정기 보고</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+</main>
+
+<iframe class="app-iframe" id="app-iframe" name="app-iframe" title="페이지 콘텐츠" allow="fullscreen"></iframe>
+
+<script>
+/* SPA 셸 — TOC 링크 가로채서 iframe 으로 페이지 로드, 해시 라우팅 */
+(function(){
+  if (window.top !== window.self) return; /* iframe 안에서 로드된 index.html 은 셸 로직 비활성 */
+
+  var iframe = document.getElementById('app-iframe');
+  if (!iframe) return;
+
+  function curHash(){ return location.hash.replace(/^#/, ''); }
+  function fileFromHash(h){ return h.endsWith('.html') ? h : h + '.html'; }
+  function nameFromFile(f){ return f.replace(/\.html$/, ''); }
+  function sameSrc(href){
+    try { return iframe.src === new URL(href, location.href).href; } catch(_) { return false; }
+  }
+
+  function showSubPage(href){
+    document.body.classList.add('iframe-on');
+    if (!sameSrc(href)) iframe.src = href;
+  }
+  function showToc(){
+    document.body.classList.remove('iframe-on');
+    if (iframe.src && iframe.src.indexOf('about:blank') === -1) iframe.src = 'about:blank';
+  }
+
+  /* TOC 링크 가로채기 — 해시 변경으로 통합 라우팅 */
+  document.querySelectorAll('.toc-items a, .ic[href]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#' || /^https?:/.test(href)) return;
+      e.preventDefault();
+      location.hash = nameFromFile(href);
+    });
+  });
+
+  /* iframe 안 페이지에서 보내는 "TOC 표시" 메시지 (서브페이지의 목차로 링크) */
+  /* [INSTR 2026-04-28] kickoff-nav 추가 — spa-link.js 가 보내는 PREV/NEXT/.home 등 SPA 라우팅 위임 */
+  window.addEventListener('message', function(e){
+    if (!e.data) return;
+    if (e.data.type === 'kickoff-show-toc') {
+      if (location.hash) location.hash = '';
+      else showToc();
+    } else if (e.data.type === 'kickoff-nav' && e.data.file) {
+      var name = nameFromFile(e.data.file).replace(/\.html$/, '');
+      if (!name || name === 'index') {
+        if (location.hash) location.hash = '';
+        else showToc();
+      } else {
+        location.hash = name;
+      }
+    }
+  });
+
+  /* iframe 내부 네비게이션 (PREV/NEXT 등) → 부모 해시 동기화 + iframe 포커스 (키보드 입력 위임) */
+  iframe.addEventListener('load', function(){
+    try {
+      var path = iframe.contentWindow.location.pathname;
+      var file = path.split('/').pop();
+      if (!file || file === 'index.html' || file === 'index01.html') return;
+      var name = nameFromFile(file).replace(/\.html$/, '');
+      if (curHash() !== name) {
+        history.replaceState(null, '', '#' + name);
+      }
+      /* [INSTR 2026-04-28] iframe 자동 포커스 — 화살표/스페이스 등 nav 키가 iframe 안 mode-selector 로 전달되게 함 */
+      try { iframe.contentWindow.focus(); } catch(_) {}
+    } catch(_) {}
+  });
+
+  /* [INSTR 2026-04-28] 부모에 포커스가 있을 때 nav 키를 iframe 으로 전달
+     iframe 이 활성(.iframe-on)이고 입력 필드가 아닐 때만 작동 */
+  var NAV_KEYS = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','PageUp','PageDown',' ','Home','f','F','?'];
+  document.addEventListener('keydown', function(e){
+    if (!document.body.classList.contains('iframe-on')) return;
+    if (!NAV_KEYS.includes(e.key)) return;
+    var t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    /* iframe contentWindow 가 이미 포커스를 가졌으면 중복 처리 방지 */
+    if (document.activeElement === iframe) return;
+    if (!iframe.contentWindow) return;
+    e.preventDefault();
+    try {
+      iframe.contentWindow.focus();
+      var evt = new KeyboardEvent('keydown', {
+        key: e.key, code: e.code, keyCode: e.keyCode,
+        bubbles: true, cancelable: true
+      });
+      iframe.contentWindow.document.dispatchEvent(evt);
+    } catch(_) {}
+  });
+
+  function applyHash(){
+    var h = curHash();
+    if (h) showSubPage(fileFromHash(h));
+    else showToc();
+  }
+
+  window.addEventListener('hashchange', applyHash);
+  applyHash();
+
+  /* [INSTR 2026-04-29] viewer.html 과 페이지 동기화 — 같은 키보드로 두 창 동시 이동
+     localStorage 'kickoff-active-page' 키 broadcast/listen */
+  var SYNC_KEY = 'kickoff-active-page';
+  var _syncing = false;
+  function broadcastPage(id){
+    if (_syncing) return;
+    try { localStorage.setItem(SYNC_KEY, JSON.stringify({ id: id, ts: Date.now() })); } catch(_){}
+  }
+  /* 해시 변경 시 broadcast (TOC = "index") */
+  window.addEventListener('hashchange', function(){
+    var h = curHash();
+    broadcastPage(h || 'index');
+  });
+  /* iframe 로드 시에도 broadcast */
+  iframe.addEventListener('load', function(){
+    try {
+      var file = iframe.contentWindow.location.pathname.split('/').pop();
+      if (!file || file === 'index01.html') return;
+      if (file === 'index.html') { broadcastPage('index'); return; }
+      var name = file.replace(/\.html$/, '');
+      broadcastPage(name);
+    } catch(_) {}
+  });
+  /* viewer 에서 이동 시 → index01 도 따라가기 */
+  window.addEventListener('storage', function(e){
+    if (e.key !== SYNC_KEY || !e.newValue) return;
+    var data; try { data = JSON.parse(e.newValue); } catch(_) { return; }
+    if (!data || !data.id) return;
+    _syncing = true;
+    if (data.id === 'index') {
+      if (location.hash) location.hash = '';
+      else showToc();
+    } else {
+      if (curHash() !== data.id) location.hash = data.id;
+    }
+    setTimeout(function(){ _syncing = false; }, 50);
+  });
+})();
+
+/* [INSTR 2026-04-28] index01.html 전용 — 첫 사용자 입력(클릭/키) 시 자동 전체화면 진입
+   브라우저 정책상 사용자 제스처 없이는 fullscreen 호출이 거부되므로 1회 한정 트리거 */
+(function(){
+  if (window.top !== window.self) return;
+  function enterFs(){
+    var el = document.documentElement;
+    var req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+    if (req) { try { req.call(el); } catch(_) {} }
+    document.removeEventListener('click', enterFs, true);
+    document.removeEventListener('keydown', enterFs, true);
+  }
+  document.addEventListener('click', enterFs, true);
+  document.addEventListener('keydown', enterFs, true);
+})();
+
+/* [INSTR 2026-04-28] index01.html 전용 — 모드 셀렉터 다이얼로그 표시 차단
+   이미 발표 모드로 강제 진입했으므로 선택 UI 불필요 */
+(function(){
+  var hideStyle = document.createElement('style');
+  hideStyle.textContent = '#mode-dialog,#mode-help,#mode-reset-btn,#edit-reset-btn{display:none!important}';
+  document.head.appendChild(hideStyle);
+})();
+</script>
+</body>
+</html>

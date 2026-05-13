@@ -1,0 +1,84 @@
+/* [INSTR 2026-04-28] 콘텐츠 공통 프레임 — 02-5-1.html 기준 + 2:6:2 비율 (좌여백:콘텐츠:우여백)
+   1,2 페이지에만 로드 (해당 페이지만 영향). presentation-overrides.css 뒤에 로드되어 우선 적용. */
+
+/* fit-viewport.js 가 모드 진입 시 wrapper 에 transform-origin: top center 를 강제하여
+   wrapper 폭(100/scale%)이 viewport 보다 넓을 때 시각적으로 우측 시프트가 발생.
+   좌상단 origin 으로 보정하여 좌측 정렬 기준 유지. */
+#fit-wrapper {
+    transform-origin: 0 0 !important;
+}
+
+/* 2:6:2 비율 — 콘텐츠 폭 60% · 좌우 여백 각 20% · 중앙 정렬 */
+.bk-page,
+main.bk-page,
+div.bk-page {
+    width: 60% !important;
+    max-width: 60% !important;
+    margin: 0 auto !important;
+    padding: 48px 40px 60px !important;
+    box-sizing: border-box !important;
+}
+
+/* 모드 진입 시 상단 엣지 스트립(12px) 보호용 padding-top 만 축소 */
+html[data-mode="edit"] .bk-page,
+html[data-mode="presentation"] .bk-page,
+html[data-mode="edit"] main.bk-page,
+html[data-mode="presentation"] main.bk-page,
+html[data-mode="edit"] div.bk-page,
+html[data-mode="presentation"] div.bk-page {
+    padding-top: 22px !important;
+}
+
+/* [INSTR 2026-04-28] 영역별 위치 통일 — 페이지마다 헤더/인트로/섹션 타이틀/푸터가
+   같은 y 좌표에서 시작하도록 고정 높이 · 마진 강제. 콘텐츠 길이 차이는 가운데 본문 영역에서 흡수. */
+
+/* (1) 페이지 컨테이너 — flex column 으로 푸터 하단 고정 */
+.bk-page,
+main.bk-page,
+div.bk-page {
+    display: flex !important;
+    flex-direction: column;
+    min-height: calc(100vh - 16px);
+}
+
+/* (2) 헤더 (.bk-hd) — 커버 문구 틀, 항상 동일 위치/높이 */
+.bk-page > .bk-hd {
+    flex: 0 0 auto;
+    min-height: 110px !important;
+    margin-bottom: 28px !important;
+    padding-bottom: 18px !important;
+    border-bottom: 3px solid var(--bk-deep) !important;
+}
+
+/* (3) 인트로 노트 (.note) — 헤더 직하 동일 위치 */
+.bk-page > .note {
+    flex: 0 0 auto;
+    min-height: 64px !important;
+    margin: 0 0 24px !important;
+    padding: 14px 18px !important;
+}
+
+/* (4) 섹션 타이틀 (.bk-sec) — 콘텐츠 블록 시작점 통일 */
+.bk-page > .bk-sec {
+    flex: 0 0 auto;
+    margin: 28px 0 16px !important;
+}
+
+/* (5) 본문 컨테이너 — 남은 세로 공간 흡수 (콘텐츠 길이 차이 균등 분배) */
+.bk-page > .g2,
+.bk-page > .g3,
+.bk-page > .g4,
+.bk-page > .g5,
+.bk-page > .pstrip,
+.bk-page > .idx,
+.bk-page > .mx,
+.bk-page > table.tb {
+    flex: 0 0 auto;
+}
+
+/* (6) 푸터 (.pf) — 항상 페이지 하단 고정 */
+.bk-page > .pf {
+    flex: 0 0 auto;
+    margin-top: auto !important;
+    padding-top: 24px !important;
+}

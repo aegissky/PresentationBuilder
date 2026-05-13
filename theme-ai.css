@@ -1,0 +1,526 @@
+/* ═══════════════════════════════════════════════════════
+   AI · Sci-Fi 테마 — 심연 우주 배경 + 네온 홀로그래픽
+   data-theme="ai" 일 때만 적용 (별도 관리)
+═══════════════════════════════════════════════════════ */
+
+[data-theme="ai"]{
+  --bk-nav:#0A0E27;
+  --bk-deep:#1A237E;
+  --bk-mid:#3949AB;
+  --bk-slate:#5C6BC0;
+  --bk-muted:#7986CB;
+  --bk-bright:#00E5FF;
+  --bk-pale:#1E2547;
+  --bk-tint:#141B3A;
+  --bk-bg:#05070E;
+  --bk-white:#0E1430;
+  --bk-text:#E0F7FA;
+  --bk-sub:#B0BEC5;
+  --bk-orange:#FF00E5;
+  --bk-orange-bg:rgba(255,0,229,.08);
+  --bk-green:#00FF9C;
+  --bk-red:#FF3B77;
+  --bk-shadow:rgba(0,229,255,.18);
+}
+
+/* ─── 전역 배경: 심연 우주 + 성운 ─── */
+[data-theme="ai"] body{
+  background:
+    radial-gradient(ellipse at 15% 25%, rgba(156,39,176,.22) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 75%, rgba(0,229,255,.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(26,35,126,.35) 0%, transparent 70%),
+    linear-gradient(180deg, #05070E 0%, #0A0E27 100%);
+  background-attachment: fixed;
+  color: var(--bk-text);
+  position: relative;
+}
+
+/* ─── 그리드 오버레이 (사이버 공간) ─── */
+[data-theme="ai"] body::before{
+  content:'';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── 스캔라인 (CRT 감성) ─── */
+[data-theme="ai"] body::after{
+  content:'';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0, transparent 3px,
+    rgba(0,229,255,.025) 3px, rgba(0,229,255,.025) 4px);
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+
+/* ─── 콘텐츠 z-index (배경 위로) ─── */
+[data-theme="ai"] nav.bk-nav,
+[data-theme="ai"] .cover,
+[data-theme="ai"] .bk-page,
+[data-theme="ai"] main,
+[data-theme="ai"] .kr-toolbar,
+[data-theme="ai"] .kr-btn,
+[data-theme="ai"] .kr-menu{ position: relative; z-index: 5; }
+
+/* ─── 네비게이션 ─── */
+[data-theme="ai"] .bk-nav{
+  background: linear-gradient(90deg, rgba(10,14,39,.95), rgba(26,35,126,.92));
+  border-bottom: 1px solid rgba(0,229,255,.4);
+  box-shadow: 0 2px 24px rgba(0,229,255,.12);
+  backdrop-filter: blur(10px);
+}
+[data-theme="ai"] .bk-nav .brand{
+  color:#fff;
+  text-shadow: 0 0 8px rgba(0,229,255,.4);
+}
+[data-theme="ai"] .bk-nav .brand span{ color:#00E5FF; }
+[data-theme="ai"] .bk-nav .home{
+  color:#00E5FF;
+  border-color: rgba(0,229,255,.5);
+  background: rgba(0,229,255,.06);
+}
+[data-theme="ai"] .bk-nav .home:hover{
+  border-color:#FF00E5;
+  color:#FF00E5;
+  background: rgba(255,0,229,.08);
+  box-shadow: 0 0 14px rgba(255,0,229,.4);
+}
+
+/* ─── 커버: 홀로그래픽 헤더 ─── */
+[data-theme="ai"] .cover{
+  background: linear-gradient(135deg, #0A0E27 0%, #1A237E 50%, #0A0E27 100%);
+  border-bottom: 1px solid rgba(0,229,255,.3);
+  overflow: hidden;
+}
+[data-theme="ai"] .cover::before{
+  background:#FF00E5;
+  box-shadow: 0 0 12px #FF00E5, 0 0 24px rgba(255,0,229,.5);
+}
+[data-theme="ai"] .cover::after{
+  content:'';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 25% 35%, rgba(0,229,255,.22) 0%, transparent 55%),
+    radial-gradient(circle at 75% 65%, rgba(255,0,229,.18) 0%, transparent 55%);
+  pointer-events: none;
+}
+[data-theme="ai"] .cover .w{ position: relative; z-index: 2; }
+[data-theme="ai"] .cover .eye{
+  color:#FF00E5;
+  text-shadow: 0 0 10px rgba(255,0,229,.6);
+  animation: ai-pulse 2.4s ease-in-out infinite;
+}
+[data-theme="ai"] .cover h1{
+  color:#fff;
+  text-shadow:
+    0 0 12px rgba(0,229,255,.8),
+    0 0 30px rgba(0,229,255,.5),
+    0 0 50px rgba(255,0,229,.3);
+  animation: ai-glow 3s ease-in-out infinite;
+}
+[data-theme="ai"] .cover h1 span{
+  color: rgba(0,229,255,.7);
+  text-shadow: 0 0 8px rgba(0,229,255,.5);
+}
+[data-theme="ai"] .cover .sub{ color: rgba(224,247,250,.75); }
+
+/* ─── 페이지 헤더 ─── */
+[data-theme="ai"] .bk-hd{ border-bottom-color: #00E5FF; }
+[data-theme="ai"] .bk-hd .eye{
+  color:#FF00E5;
+  text-shadow: 0 0 8px rgba(255,0,229,.5);
+}
+[data-theme="ai"] .bk-hd h1{
+  color:#fff;
+  text-shadow: 0 0 12px rgba(0,229,255,.6), 0 0 24px rgba(0,229,255,.3);
+}
+[data-theme="ai"] .bk-hd .sub{ color:#B0BEC5; }
+
+/* ─── 섹션 타이틀 ─── */
+[data-theme="ai"] .bk-sec .tag{
+  color:#FF00E5;
+  border-color:#FF00E5;
+  background: rgba(255,0,229,.08);
+  box-shadow: 0 0 10px rgba(255,0,229,.2), inset 0 0 6px rgba(255,0,229,.1);
+}
+[data-theme="ai"] .bk-sec h2{
+  color:#00E5FF;
+  text-shadow: 0 0 8px rgba(0,229,255,.4);
+}
+[data-theme="ai"] .bk-sec .line{
+  background: linear-gradient(90deg, rgba(0,229,255,.6), transparent);
+  height: 1px;
+}
+
+/* ─── 카드 (홀로그램 글래스) ─── */
+[data-theme="ai"] .card,
+[data-theme="ai"] .pcard,
+[data-theme="ai"] .kpi,
+[data-theme="ai"] .qcard,
+[data-theme="ai"] .scard,
+[data-theme="ai"] .env-card,
+[data-theme="ai"] .ic,
+[data-theme="ai"] .pf a{
+  background: linear-gradient(145deg, rgba(30,37,71,.8), rgba(10,14,39,.92));
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,229,255,.22);
+  box-shadow:
+    0 0 0 1px rgba(0,229,255,.08) inset,
+    0 4px 28px rgba(0,229,255,.08),
+    0 0 40px rgba(255,0,229,.04);
+  color: var(--bk-text);
+  position: relative;
+  overflow: hidden;
+}
+[data-theme="ai"] .card:hover,
+[data-theme="ai"] .pcard:hover,
+[data-theme="ai"] .kpi:hover,
+[data-theme="ai"] .scard:hover,
+[data-theme="ai"] .env-card:hover,
+[data-theme="ai"] .ic:hover,
+[data-theme="ai"] .pf a:hover{
+  border-color: rgba(0,229,255,.55);
+  box-shadow:
+    0 0 0 1px rgba(0,229,255,.2) inset,
+    0 8px 36px rgba(0,229,255,.22),
+    0 0 60px rgba(255,0,229,.12);
+}
+
+/* 카드 상단 액센트 (네온 라인) */
+[data-theme="ai"] .card{ border-top: 2px solid #00E5FF; }
+[data-theme="ai"] .card.o{ border-top-color: #FF00E5; }
+[data-theme="ai"] .card.d{ border-top-color: #7C4DFF; }
+[data-theme="ai"] .card.g{ border-top-color: #00FF9C; }
+[data-theme="ai"] .card.r{ border-top-color: #FF3B77; }
+[data-theme="ai"] .card.navy{ background: linear-gradient(145deg, rgba(26,35,126,.8), rgba(10,14,39,.95)); }
+
+/* pcard/scard 좌측 라인 */
+[data-theme="ai"] .pcard{ border-left: 3px solid #00E5FF; }
+[data-theme="ai"] .pcard.o{ border-left-color:#FF00E5; }
+[data-theme="ai"] .pcard.d{ border-left-color:#7C4DFF; }
+[data-theme="ai"] .pcard.g{ border-left-color:#00FF9C; }
+[data-theme="ai"] .scard{ border-left: 3px solid #00E5FF; }
+[data-theme="ai"] .scard.o{ border-left-color:#FF00E5; }
+[data-theme="ai"] .scard.d{ border-left-color:#7C4DFF; }
+[data-theme="ai"] .scard.g{ border-left-color:#00FF9C; }
+
+/* 카드 제목 */
+[data-theme="ai"] .card h3,
+[data-theme="ai"] .pcard h3,
+[data-theme="ai"] .kpi .kl,
+[data-theme="ai"] .qcard h3,
+[data-theme="ai"] .scard-hd h3,
+[data-theme="ai"] .env-card h4,
+[data-theme="ai"] .ic .ttl,
+[data-theme="ai"] .pf .ttl{
+  color:#00E5FF;
+  text-shadow: 0 0 6px rgba(0,229,255,.35);
+  border-color: rgba(0,229,255,.2);
+}
+[data-theme="ai"] .card.navy h3{ color:#fff; }
+[data-theme="ai"] .card.o h3,
+[data-theme="ai"] .scard.o .scard-hd h3,
+[data-theme="ai"] .env-card.o h4{
+  color:#FF00E5;
+  text-shadow: 0 0 6px rgba(255,0,229,.4);
+}
+
+/* 카드 li */
+[data-theme="ai"] .card li,
+[data-theme="ai"] .pcard li,
+[data-theme="ai"] .qcard li,
+[data-theme="ai"] .scard li,
+[data-theme="ai"] .env-card li,
+[data-theme="ai"] .ic .sub{
+  color: rgba(224,247,250,.78);
+  border-color: rgba(0,229,255,.12);
+}
+[data-theme="ai"] .card li::before,
+[data-theme="ai"] .pcard li::before,
+[data-theme="ai"] .scard li::before{
+  background:#00E5FF;
+  box-shadow: 0 0 6px #00E5FF;
+}
+[data-theme="ai"] .card.o li::before,
+[data-theme="ai"] .pcard.o li::before,
+[data-theme="ai"] .scard.o li::before{
+  background:#FF00E5;
+  box-shadow: 0 0 6px #FF00E5;
+}
+[data-theme="ai"] .qcard li::before{ box-shadow: 0 0 6px currentColor; }
+
+/* 카드 호버 홀로그램 스윕 */
+[data-theme="ai"] .card::before,
+[data-theme="ai"] .pcard::before,
+[data-theme="ai"] .scard::before,
+[data-theme="ai"] .kpi::before,
+[data-theme="ai"] .ic::before,
+[data-theme="ai"] .env-card::before,
+[data-theme="ai"] .pf a::before{
+  content:'';
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg,
+    transparent 30%, rgba(0,229,255,.08) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform .9s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+[data-theme="ai"] .card:hover::before,
+[data-theme="ai"] .pcard:hover::before,
+[data-theme="ai"] .scard:hover::before,
+[data-theme="ai"] .kpi:hover::before,
+[data-theme="ai"] .ic:hover::before,
+[data-theme="ai"] .env-card:hover::before,
+[data-theme="ai"] .pf a:hover::before{
+  transform: translateX(100%);
+}
+
+/* KPI 숫자 */
+[data-theme="ai"] .kpi .kn{
+  color:#00E5FF;
+  text-shadow: 0 0 16px rgba(0,229,255,.6), 0 0 30px rgba(0,229,255,.3);
+}
+[data-theme="ai"] .kpi.o .kn{ color:#FF00E5; text-shadow: 0 0 16px rgba(255,0,229,.6); }
+[data-theme="ai"] .kpi.g .kn{ color:#00FF9C; text-shadow: 0 0 16px rgba(0,255,156,.6); }
+
+/* ─── 테이블 ─── */
+[data-theme="ai"] .tb{
+  box-shadow: 0 2px 24px rgba(0,229,255,.1);
+}
+[data-theme="ai"] .tb th{
+  background: linear-gradient(90deg, #1A237E, #0A0E27);
+  color:#00E5FF;
+  border-color: rgba(0,229,255,.3);
+  text-shadow: 0 0 6px rgba(0,229,255,.5);
+}
+[data-theme="ai"] .tb td{
+  background: rgba(14,20,48,.7);
+  color:#B0BEC5;
+  border-color: rgba(0,229,255,.12);
+}
+[data-theme="ai"] .tb tr:nth-child(even) td{ background: rgba(26,35,126,.35); }
+[data-theme="ai"] .tb .lbl{
+  background: rgba(10,14,39,.92)!important;
+  color:#00E5FF!important;
+}
+[data-theme="ai"] .tb .hl{ color:#FF00E5; text-shadow: 0 0 6px rgba(255,0,229,.5); }
+[data-theme="ai"] .tb .ok{ color:#00FF9C; text-shadow: 0 0 6px rgba(0,255,156,.5); }
+[data-theme="ai"] .total td{
+  background: linear-gradient(90deg, #1A237E, #3949AB)!important;
+  color:#fff!important;
+  text-shadow: 0 0 8px rgba(0,229,255,.5);
+}
+
+/* ─── 숫자 원형 ─── */
+[data-theme="ai"] .snum,
+[data-theme="ai"] .pi{ box-shadow: 0 0 10px rgba(255,0,229,.5); }
+[data-theme="ai"] .snum{ background:#FF00E5; }
+[data-theme="ai"] .snum.b{ background:#00E5FF; color:#05070E; box-shadow: 0 0 10px rgba(0,229,255,.5); }
+[data-theme="ai"] .snum.g{ background:#00FF9C; color:#05070E; box-shadow: 0 0 10px rgba(0,255,156,.5); }
+
+/* ─── 프로세스 스트립 ─── */
+[data-theme="ai"] .pstrip{ box-shadow: 0 0 30px rgba(0,229,255,.15); }
+[data-theme="ai"] .pi:nth-child(1){ background: #0A0E27; }
+[data-theme="ai"] .pi:nth-child(2){ background: #1A237E; }
+[data-theme="ai"] .pi:nth-child(3){ background: #3949AB; }
+[data-theme="ai"] .pi:nth-child(4){ background: #5C6BC0; }
+[data-theme="ai"] .pi:nth-child(5){ background: linear-gradient(135deg,#FF00E5,#7C4DFF); }
+[data-theme="ai"] .pi{ border-right-color: rgba(0,229,255,.2); }
+[data-theme="ai"] .pi .pt{ text-shadow: 0 0 6px rgba(0,229,255,.4); }
+
+/* ─── 노트/배지 ─── */
+[data-theme="ai"] .note{
+  background: rgba(0,229,255,.06);
+  border-left-color:#00E5FF;
+  color:#B0BEC5;
+  box-shadow: inset 0 0 20px rgba(0,229,255,.04);
+}
+[data-theme="ai"] .note.w{
+  background: rgba(255,0,229,.06);
+  border-left-color:#FF00E5;
+  color:#E0F7FA;
+  box-shadow: inset 0 0 20px rgba(255,0,229,.06);
+}
+[data-theme="ai"] .note .t{ color:#00E5FF; }
+[data-theme="ai"] .note.w .t{ color:#FF00E5; }
+[data-theme="ai"] .badge.new{
+  background: rgba(255,0,229,.1);
+  color:#FF00E5;
+  border-color:#FF00E5;
+  box-shadow: 0 0 8px rgba(255,0,229,.3);
+}
+
+/* ─── AS-IS / TO-BE ─── */
+[data-theme="ai"] .asis-tobe .as{
+  background: rgba(10,14,39,.7);
+  border-color: rgba(176,190,197,.2);
+  color:#78909C;
+}
+[data-theme="ai"] .asis-tobe .to{
+  background: linear-gradient(145deg, rgba(0,229,255,.08), rgba(26,35,126,.7));
+  border-color: rgba(0,229,255,.3);
+  color:#E0F7FA;
+}
+[data-theme="ai"] .asis-tobe .arr{
+  background: rgba(10,14,39,.8);
+  border-color: rgba(0,229,255,.3);
+  color:#FF00E5;
+  text-shadow: 0 0 10px rgba(255,0,229,.6);
+}
+[data-theme="ai"] .asis-tobe .adv{
+  color:#FF00E5;
+  text-shadow: 0 0 6px rgba(255,0,229,.5);
+}
+
+/* ─── 목차 (index) ─── */
+[data-theme="ai"] .sec-blk .hd{
+  color:#00E5FF;
+  border-bottom-color:#FF00E5;
+  text-shadow: 0 0 10px rgba(0,229,255,.5);
+}
+[data-theme="ai"] .toc-marker{
+  background: linear-gradient(145deg, rgba(26,35,126,.5), rgba(10,14,39,.9));
+  border: 1px solid rgba(0,229,255,.3);
+  box-shadow: 0 0 20px rgba(0,229,255,.1);
+}
+[data-theme="ai"] .toc-marker .roman{
+  color:#FF00E5;
+  text-shadow: 0 0 10px rgba(255,0,229,.6);
+}
+[data-theme="ai"] .toc-marker .mname{
+  color:#00E5FF;
+  text-shadow: 0 0 6px rgba(0,229,255,.4);
+}
+[data-theme="ai"] .toc-sub-label{ color:#7986CB; }
+[data-theme="ai"] .toc-items a{ color:#B0BEC5; }
+[data-theme="ai"] .toc-items a:hover{
+  color:#00E5FF;
+  text-shadow: 0 0 6px rgba(0,229,255,.5);
+}
+[data-theme="ai"] .toc-items li{ border-left-color: rgba(0,229,255,.2); }
+
+/* ─── 매트릭스(mx) ─── */
+[data-theme="ai"] .mx-hd{
+  background: linear-gradient(90deg,#1A237E,#3949AB);
+  color:#00E5FF;
+  text-shadow: 0 0 6px rgba(0,229,255,.4);
+}
+[data-theme="ai"] .mx-sub{
+  background: linear-gradient(90deg,#FF00E5,#7C4DFF);
+  color:#fff;
+}
+[data-theme="ai"] .mx-col{
+  background: rgba(14,20,48,.8);
+  border-color: rgba(0,229,255,.2);
+}
+[data-theme="ai"] .mx-items{ color:#B0BEC5; }
+
+/* ─── 페이지 네비 (prev/next) ─── */
+[data-theme="ai"] .pf{ border-top-color: rgba(0,229,255,.3); }
+[data-theme="ai"] .pf .dir{
+  color:#FF00E5;
+  text-shadow: 0 0 6px rgba(255,0,229,.4);
+}
+[data-theme="ai"] .pf .sub{ color:#7986CB; }
+
+/* ─── IC (목차 페이지 카드) ─── */
+[data-theme="ai"] .ic .no{
+  color:#FF00E5;
+  text-shadow: 0 0 6px rgba(255,0,229,.5);
+}
+
+/* ═══════════════════════════════════════════════════════
+   파티클 레이어 (JS로 동적 생성되는 별, 오브)
+═══════════════════════════════════════════════════════ */
+.ai-stars{
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+.ai-star{
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  animation: ai-twinkle var(--dur,3s) ease-in-out infinite;
+  animation-delay: var(--delay,0s);
+  box-shadow: 0 0 4px #fff, 0 0 8px rgba(0,229,255,.5);
+}
+.ai-star.c{ box-shadow: 0 0 6px #00E5FF, 0 0 14px rgba(0,229,255,.7); }
+.ai-star.m{ background:#FF80E5; box-shadow: 0 0 6px #FF00E5, 0 0 14px rgba(255,0,229,.7); }
+
+/* 큰 플로팅 오브 (성운 느낌) */
+.ai-orb{
+  position: fixed;
+  width: 480px; height: 480px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: .32;
+  pointer-events: none;
+  z-index: 1;
+  animation: ai-drift 28s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+.ai-orb.cyan{ background: radial-gradient(circle, #00E5FF 0%, transparent 70%); }
+.ai-orb.magenta{
+  background: radial-gradient(circle, #FF00E5 0%, transparent 70%);
+  animation-duration: 36s; animation-delay: -10s;
+}
+.ai-orb.indigo{
+  background: radial-gradient(circle, #7C4DFF 0%, transparent 70%);
+  animation-duration: 44s; animation-delay: -20s;
+}
+
+/* 유성 (간헐적 streak) */
+.ai-streak{
+  position: fixed;
+  width: 2px; height: 120px;
+  background: linear-gradient(180deg, transparent, #00E5FF, #fff);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+  transform-origin: top left;
+  animation: ai-shoot 7s linear infinite;
+  box-shadow: 0 0 10px #00E5FF;
+}
+
+/* ─── 애니메이션 ─── */
+@keyframes ai-twinkle{
+  0%,100%{ opacity: var(--min,.2); transform: scale(.8); }
+  50%{ opacity: 1; transform: scale(1.25); }
+}
+@keyframes ai-drift{
+  0%,100%{ transform: translate(-20%,-10%); }
+  25%{ transform: translate(30%,20%); }
+  50%{ transform: translate(50%,-30%); }
+  75%{ transform: translate(-10%,40%); }
+}
+@keyframes ai-glow{
+  0%,100%{ filter: brightness(1); }
+  50%{ filter: brightness(1.22); }
+}
+@keyframes ai-pulse{
+  0%,100%{ opacity: 1; }
+  50%{ opacity: .72; }
+}
+@keyframes ai-shoot{
+  0%   { opacity: 0; transform: translate(var(--sx,-100px), var(--sy,-100px)) rotate(35deg); }
+  3%   { opacity: 1; }
+  8%   { opacity: 1; transform: translate(calc(var(--sx,-100px) + 520px), calc(var(--sy,-100px) + 360px)) rotate(35deg); }
+  10%,100%{ opacity: 0; }
+}
+
+/* 접근성: 모션 감소 선호 시 */
+@media (prefers-reduced-motion: reduce){
+  [data-theme="ai"] .cover h1,
+  [data-theme="ai"] .cover .eye,
+  .ai-star, .ai-orb, .ai-streak{ animation: none; }
+}

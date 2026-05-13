@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "project_type": "proposal",
+  "display_name": "제안서",
+  "duration_range": [20, 30],
+  "page_range": [20, 30],
+  "default_theme": "navy",
+  "recommended_themes": ["navy", "charcoal"],
+  "default_audience": "",
+  "default_tone": "",
+  "default_emphasis": [],
+  "sections": [
+    { "id": "00", "title": "Cover",
+      "pages": [{ "id": "00", "title": "표지", "layout": "L01", "duration_sec": 0 }] },
+    { "id": "99", "title": "Closing",
+      "pages": [{ "id": "99", "title": "마무리", "layout": "L01", "duration_sec": 0 }] }
+  ],
+  "style": { "opening": "", "emphasis": "", "closing": "" }
+}

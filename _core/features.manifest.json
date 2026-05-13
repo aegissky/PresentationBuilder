@@ -1,0 +1,180 @@
+{
+  "schema_version": "1.0",
+  "_comment": "PresentationBuilder 화면 단위 공통 기능 카탈로그 (B축). 새 PPT는 features.manifest.json을 읽어 화면별 표준 헤드 슬롯을 자동 주입한다.",
+  "loading_order": [
+    "theme",
+    "theme-ai",
+    "mode-selector",
+    "editor",
+    "memo",
+    "fit-viewport",
+    "site-actions",
+    "spa-link"
+  ],
+  "features": [
+    {
+      "id": "theme",
+      "name": "테마 시스템",
+      "summary": "3 테마(navy/forest/charcoal) 전환 + data-theme 속성 + localStorage 영속화",
+      "file": "_core/js/features/theme.js",
+      "css": ["_core/css/theme-ai.css", "_core/css/content-frame.css"],
+      "depends_on": [],
+      "localStorage_keys": ["kickoff-theme"],
+      "dom_requirements": ["<html data-theme>"],
+      "enable_default": true,
+      "config_in_pres_config": null,
+      "anti_flicker": true
+    },
+    {
+      "id": "theme-ai",
+      "name": "테마 AI 보조",
+      "summary": "AI 기반 테마 자동 추천·보조 스타일",
+      "file": "_core/js/features/theme-ai.js",
+      "css": ["_core/css/theme-ai.css"],
+      "depends_on": ["theme"],
+      "localStorage_keys": [],
+      "dom_requirements": [],
+      "enable_default": true,
+      "config_in_pres_config": null
+    },
+    {
+      "id": "mode-selector",
+      "name": "모드 선택 + 키보드 네비",
+      "summary": "edit/presentation 모드 다이얼로그(Esc) + 키보드 네비(←/→/PgUp/PgDn/Space/F11)",
+      "file": "_core/js/features/mode-selector.js",
+      "css": ["_core/css/presentation-overrides.css"],
+      "depends_on": [],
+      "localStorage_keys": ["kickoff-mode", "kickoff-mode-auto-apply", "kickoff-fit-mode"],
+      "dom_requirements": ["<html data-mode>", ".bk-nav 등"],
+      "enable_default": true,
+      "config_in_pres_config": null,
+      "keyboard_shortcuts": ["Esc=다이얼로그", "←/→=페이지", "PgUp/PgDn=페이지", "Space=다음", "F11=전체화면"]
+    },
+    {
+      "id": "editor",
+      "name": "인라인 편집",
+      "summary": "[data-eid] 마커 노드 클릭 → contenteditable. 변경분 localStorage 영속화",
+      "file": "_core/js/features/editor.js",
+      "css": [],
+      "depends_on": ["mode-selector"],
+      "localStorage_keys": ["kickoff-edits-*"],
+      "dom_requirements": ["[data-eid] markers on editable nodes"],
+      "enable_default": true,
+      "config_in_pres_config": "features.edit_mode"
+    },
+    {
+      "id": "memo",
+      "name": "개발/리뷰 메모 (tip-memo)",
+      "summary": "화면 위 메모 박스 — 드래그 이동, 색상, persist, 페이지별 격리",
+      "file": "_core/js/features/memo.js",
+      "css": ["_core/css/mode-tip.css"],
+      "depends_on": ["mode-selector"],
+      "localStorage_keys": ["kickoff-tip-memos-*"],
+      "dom_requirements": ["<body>"],
+      "enable_default": true,
+      "config_in_pres_config": "features.tip_memo",
+      "renamed_from": "tip-memo.js"
+    },
+    {
+      "id": "fit-viewport",
+      "name": "viewport 자동 맞춤 (vfit)",
+      "summary": "frame/fluid 2 모드. 폰트·스케일 반복 수렴으로 오버플로우 없을 때까지 조정",
+      "file": "_core/js/features/fit-viewport.js",
+      "css": [],
+      "depends_on": [],
+      "localStorage_keys": ["kickoff-fit-mode"],
+      "dom_requirements": [".bk-page"],
+      "enable_default": true,
+      "config_in_pres_config": null,
+      "css_variables": ["--vfit-k"]
+    },
+    {
+      "id": "site-actions",
+      "name": "페이지 액션 패널 + 페이지/섹션 네비",
+      "summary": "오른쪽 중앙 4버튼 (페이지·섹션·테마·편집) + ✕ 닫기. PAGES 배열은 인스턴스별 nav-data.js 외부 주입 권장 (현재는 인라인)",
+      "file": "_core/js/features/site-actions.js",
+      "css": [],
+      "depends_on": ["theme", "editor"],
+      "localStorage_keys": ["kickoff-theme", "kickoff-edit-mode", "kickoff-edits-*"],
+      "dom_requirements": [".pf nav (PREV/NEXT)"],
+      "enable_default": true,
+      "config_in_pres_config": null,
+      "data_separation": "TODO W2: PAGES 배열을 nav-data.js로 분리"
+    },
+    {
+      "id": "spa-link",
+      "name": "SPA 라우팅 (iframe + postMessage)",
+      "summary": "TOC 링크 클릭 → URL 해시 → app-iframe.src 갱신. 페이지에서 postMessage로 부모와 통신",
+      "file": "_core/js/features/spa-link.js",
+      "css": [],
+      "depends_on": [],
+      "localStorage_keys": [],
+      "dom_requirements": ["a.toc-link 또는 history-pushable links"],
+      "enable_default": true,
+      "config_in_pres_config": null,
+      "message_types": ["kickoff-nav", "kickoff-show-toc"]
+    }
+  ],
+  "css_global": [
+    {
+      "path": "_core/css/content-frame.css",
+      "summary": "콘텐츠 프레임 (bk-page, bk-hd, pf 네비 등 기본 골격)"
+    },
+    {
+      "path": "_core/css/presentation-overrides.css",
+      "summary": "발표 모드/편집 모드별 override 스타일"
+    }
+  ],
+  "lib": [
+    {
+      "id": "_sync_check",
+      "name": "자산 정합 검증 유틸 (Node CLI)",
+      "file": "_core/js/lib/_sync_check.js",
+      "summary": "MANIFEST.json vs 실 자산 sha256 비교 — Node.js CLI, _scripts/verify-manifest.ps1과 짝",
+      "load_in_pages": false,
+      "_comment": "페이지 로드 시점에 자동 포함하지 않음. Node 환경 전용."
+    },
+    {
+      "id": "page-meta-check",
+      "name": "페이지 메타 검증 (브라우저)",
+      "file": "_core/js/lib/page-meta-check.js",
+      "summary": "pres-meta 주석 vs 실제 로드된 features 비교 — 브라우저 콘솔에서 PresPageMeta.check() 호출",
+      "load_in_pages": "optional",
+      "_comment": "개발 시 슬라이드 헤드에 <script defer src=\"_core/js/lib/page-meta-check.js\"></script> 추가 권고. 자동 발동 안 함."
+    }
+  ],
+  "page_head_slot_template": {
+    "_comment": "새 PPT가 화면 1장을 만들 때 layouts/Lxx_*.html에 자동 주입할 표준 헤드. features.tip_memo:false 등 토글 false면 해당 라인 제외.",
+    "css": [
+      "<link rel=\"stylesheet\" href=\"_core/css/content-frame.css\">",
+      "<link rel=\"stylesheet\" href=\"_core/css/mode-tip.css\">",
+      "<link rel=\"stylesheet\" href=\"_core/css/presentation-overrides.css\">",
+      "<link rel=\"stylesheet\" href=\"_core/css/theme-ai.css\">"
+    ],
+    "scripts": [
+      "<script defer src=\"_core/js/features/theme.js\"></script>",
+      "<script defer src=\"_core/js/features/theme-ai.js\"></script>",
+      "<script defer src=\"_core/js/features/mode-selector.js\"></script>",
+      "<script defer src=\"_core/js/features/editor.js\"></script>",
+      "<script defer src=\"_core/js/features/memo.js\"></script>",
+      "<script defer src=\"_core/js/features/fit-viewport.js\"></script>",
+      "<script defer src=\"_core/js/features/site-actions.js\"></script>",
+      "<script defer src=\"_core/js/features/spa-link.js\"></script>",
+      "<script defer src=\"nav-data.js\"></script>"
+    ],
+    "page_meta_comment_template": "<!-- pres-meta: {\"core_version\":\"{core_version}\",\"layout\":\"{layout_id}\",\"features\":[{enabled_feature_ids}]} -->"
+  },
+  "deprecation_notice": {
+    "root_assets": {
+      "status": "deprecated",
+      "removal_date": "2026-08-11",
+      "_comment": "Builder 루트의 13개 자산은 후방 호환을 위해 90일 유지. 모든 PPT는 _core/ 경로로 이전 권고."
+    },
+    "tip-memo.js_name": {
+      "status": "renamed",
+      "new_name": "memo.js",
+      "new_path": "_core/js/features/memo.js",
+      "_comment": "기존 슬라이드의 <script src=\"tip-memo.js\">는 그대로 동작 (루트 사본 유지). 새 슬라이드는 memo.js 사용."
+    }
+  }
+}
