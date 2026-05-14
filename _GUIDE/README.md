@@ -40,7 +40,7 @@
 
 ```
 이 폴더를 읽고 발표 자료 만들어줘
-→ D:/projects/products/PresentationBuilder/_GUIDE/SKILL.md 참조
+→ ./SKILL.md 참조 (PresentationBuilder/_GUIDE/SKILL.md)
 ```
 
 또는 단순하게:

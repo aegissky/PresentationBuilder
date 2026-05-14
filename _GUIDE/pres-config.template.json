@@ -99,7 +99,7 @@
   },
 
   "output": {
-    "path": "D:/projects/products/[새프로젝트폴더명]",
+    "path": "<OutputRoot>/<NewProjectName>",
     "overwrite": false
   }
 }

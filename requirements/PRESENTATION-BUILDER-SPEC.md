@@ -1,7 +1,7 @@
 # PresentationBuilder — 자동 생성 설계서
 
 > **버전**: 1.0 · **작성일**: 2026-04-30  
-> **기준 프로젝트**: `D:/projects/products/Presentations`  
+> **기준 프로젝트**: `[기준 원본 프로젝트]`  
 > **목적**: 이 설계서를 CLAUDE에게 전달하면, 사용자가 폴더에 콘텐츠 파일만 넣고 「시작」 버튼을 누르면  
 > 지금 구현된 모든 기능이 그대로 적용된 발표 시스템이 **자동으로 생성**된다.
 
@@ -522,7 +522,7 @@ body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;
 │                                                      │
 │  [4] 출력 경로                                       │
 │  ┌─────────────────────────────────────────────┐    │
-│  │ 📁 D:/projects/products/[NewProject]/        │    │
+│  │ 📁 <OutputRoot>/<NewProject>/                │    │
 │  └─────────────────────────────────────────────┘    │
 │                                                      │
 │              [▶ 시작 — 자동 생성]                   │
@@ -566,12 +566,12 @@ STEP 10: 완료 보고 (생성 파일 수, 총 페이지, 예상 발표 시간)
 다음 프롬프트를 CLAUDE에게 전달하면 설정 파일을 읽고 전체 시스템을 생성한다.
 
 ```
-다음 설계서와 설정 파일을 읽고, D:/projects/products/Presentations 의 구조를
+다음 설계서와 설정 파일을 읽고, [기준 원본 프로젝트] 의 구조를
 그대로 복제하여 새 발표 시스템을 생성해주세요.
 
 1. 설계서 읽기: [출력경로]/requirements/PRESENTATION-BUILDER-SPEC.md
 2. 설정 파일 읽기: [출력경로]/pres-config.json
-3. 기준 프로젝트 참조: D:/projects/products/Presentations
+3. 기준 프로젝트 참조: [기준 원본 프로젝트]
 
 생성 순서:
 - 공통 모듈 파일 복사 (tts/, CSS, JS)
@@ -728,5 +728,5 @@ render()  // 현재 idx 페이지 렌더링 (오버라이드 체인 지원)
 
 ---
 
-*이 설계서는 `D:/projects/products/Presentations` 프로젝트의 현재 구현을 완전히 반영한다.*  
+*이 설계서는 `[기준 원본 프로젝트]` 프로젝트의 현재 구현을 완전히 반영한다.*  
 *CLAUDE에게 이 문서 + `pres-config.json` 을 함께 전달하면 동일한 시스템을 새 경로에 자동 생성할 수 있다.*
