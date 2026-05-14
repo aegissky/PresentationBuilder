@@ -1,88 +1,60 @@
 ---
 role: SPEC
 domain: 거버넌스
-sub_task: product-layer-inheritance
-topic: [inheritance, governance, PresentationBuilder]
-context: PresentationBuilder가 L0·L1 레이어에서 어떤 헌법과 정책을 상속받는지 선언
-updated: 2026-05-03
+sub_task: self-contained-inheritance
+topic: [inheritance, governance, PresentationBuilder, self-contained]
+updated: 2026-05-14
+self_contained: true
 ---
 
-# PresentationBuilder — L0·L1 상속 선언
+# PresentationBuilder — 자체완결 상속 선언
+
+> 본 배포본은 외부 헌법 디렉터리에 의존하지 않는다.
+> 모든 규칙은 본 폴더 내부 문서로 자기 충족적이다.
+
+---
+
+## §1. 내부 규칙 (자체완결 5종)
+
+| 코드 | 내용 | 강제 위치 |
+|------|------|----------|
+| **PB-SELF-CONTAINED** | `_scripts/*.ps1`은 `$PSScriptRoot` 기반 — 절대경로 하드코딩 금지 | 코드 |
+| **PB-MANIFEST-INTEGRITY** | 14 자산 sha256 정합 의무 | `_scripts/verify-manifest.ps1` |
+| **PB-PAGE-SCRIPT-SYNC** | 슬라이드 생성 시 HTML + script + viewer + nav 4종 동시 | `_GUIDE/SKILL.md` Phase 4 |
+| **PB-DEPLOY-POLICY** | 자산 변경 시 매니페스트 갱신 + core_version bump | `../DEPLOYMENT-POLICY.md` §7 |
+| **PB-PROMPT-STANDARD** | LLM 호출 시 표준 7-항목 인터뷰 + TOC 확인 게이트 | `../PROMPT-STANDARDS.md` |
+
+## §2. 상속 계층 (단일 레이어)
 
 ```
-L0  global_index/              전역 헌법 (불가침 적용)
-L1  base/llm_root/             base 정책·방법론
-L1  base/#Global SkillNet/     재사용 스킬
-L2  product/PresentationBuilder/  이 프로젝트 (현재 레이어)
+PresentationBuilder/                     ← 본 배포본 (SSOT, 단일 레이어)
+  ├─ _GUIDE/SKILL.md                    7-Phase 방법론
+  ├─ PROMPT-STANDARDS.md                프롬프트 표준
+  ├─ DEPLOYMENT-POLICY.md               배포 정책
+  ├─ _core/MANIFEST.json                자산 무결성
+  └─ _scripts/*.ps1                     운영 도구
+       │
+       └─ <부트스트랩된 새 PPT>          인스턴스
+           pres-config.json._meta로 본 배포본 추적
 ```
 
----
+## §3. 외부 의존성 (선택적, 비차단)
 
-## L0 상속 — 전역 헌법 (전부 적용)
+| 외부 자산 | 본 배포본 영향 | 비고 |
+|----------|--------------|------|
+| Google Fonts CDN | 폰트 렌더 (CLOSED 망 시 DEPLOYMENT-POLICY §4 로컬 호스팅) | 비차단 |
+| 사용자별 AI 도구 (Claude Code / ChatGPT / Cursor) | LLM 트리거 환경 | 임의 선택 |
 
-| 헌법 코드 | 파일 | 적용 여부 |
-|----------|------|:--------:|
-| PROCESS-KILL | `global_index/01_constitution/PROCESS-KILL.md` | ✅ |
-| TCE | `global_index/01_constitution/TCE.md` | ✅ |
-| CONTEXT-CHAIN | `global_index/01_constitution/CONTEXT-CHAIN.md` | ✅ |
-| FORWARD-ONLY | `global_index/01_constitution/FORWARD-ONLY.md` | ✅ |
-| DEEP-JUDGMENT | `global_index/01_constitution/DEEP-JUDGMENT.md` | ✅ |
-| STEP-CHECKPOINT | `global_index/01_constitution/STEP-CHECKPOINT.md` | ✅ |
-| CODE-CLEANUP | `global_index/02_dev_rules/CODE-CLEANUP-COMPLETENESS.md` | ✅ |
-| OUTPUT-FORMAT | `global_index/01_constitution/OUTPUT-FORMAT.md` | ✅ |
-| UI-FUNCTION-CONNECT | `global_index/02_dev_rules/UI-FUNCTION-CONNECT.md` | ✅ |
-| API-SERIALIZATION-PARITY | `global_index/02_dev_rules/API-SERIALIZATION-PARITY.md` | ✅ |
-| PATH-ENCODING-SAFETY | `global_index/02_dev_rules/PATH-ENCODING-SAFETY.md` | ✅ |
-| CRI | `global_index/02_dev_rules/CODE-REFERENCE-INTEGRITY.md` | ✅ |
-| PRESENTATION-PAGE-SCRIPT-SYNC | `global_index/03_project_rules/PRESENTATION-PAGE-SCRIPT-SYNC.md` | ✅ |
-| WHG | `global_index/02_dev_rules/WORK-HISTORY-GOVERNANCE.md` | ✅ |
-| MFG | `global_index/02_dev_rules/MD-FILE-GOVERNANCE.md` | ✅ |
+## §4. L2 오버라이드 (사용자 확장 지점)
 
----
+- `CLAUDE_local.md` — 조직별 규칙 추가
+- `_GUIDE/SKILL.md` — 방법론 보강 (단 PB-PAGE-SCRIPT-SYNC 헌법은 유지)
+- `_templates/projects/<유형>/manifest.json` — 새 발표 유형 정의
+- `_templates/projects/_template.manifest.json` — 마스터 뼈대 (복제 기준)
 
-## L1 상속 — base 정책
+## §5. 변경 이력
 
-| 정책 | 파일 | 적용 여부 | 비고 |
-|------|------|:--------:|------|
-| 모델 선택·토큰 최적화 | `base/llm_root/09_optimization/token-model.md` | ✅ | |
-| 기능 추가·수정 게이트 | `base/llm_root/04_design/pia-gate.md` | ✅ | 슬라이드 기능 추가 전 |
-| 코드 작성 가이드 | `base/llm_root/05_coding/coding-guard.md` | ✅ | HTML/CSS/JS |
-| 필수 개발 정책 | `base/llm_root/05_coding/dev-mandatory-policy.md` | ✅ | §DMP |
-
----
-
-## L1 스킬 상속 — #Global SkillNet
-
-| 스킬 ID | 스킬명 | 용도 |
-|---------|--------|------|
-| 27 | change_guard_skill | 공통 모듈 변경 보호 |
-| 32 | critical_evaluator_skill | 완료 선언 전 평가 |
-| 47 | ersl_skill | 버그 수정 |
-| 51 | work_history_skill | 작업 이력 관리 |
-
----
-
-## L2 오버라이드 — PresentationBuilder 전용
-
-```
-프로젝트명  : PresentationBuilder
-레이어      : L2
-루트 경로   : D:/projects/products/PresentationBuilder/
-LLM 진입점  : CLAUDE_local.md (Claude Code 오버라이드)
-스택        : HTML · CSS · JS · TTS
-로컬 스킬   : _GUIDE/SKILL.md (최우선)
-```
-
-| 항목 | L0/L1 기본값 | PresentationBuilder 오버라이드 | 근거 |
-|------|------------|---------------------------|------|
-| 스킬 1차 참조 | #Global SkillNet | `_GUIDE/SKILL.md` 최우선 | 발표 생성 전용 스킬 |
-| 신규 슬라이드 생성 | 일반 파일 생성 게이트 | PRESENTATION-PAGE-SCRIPT-SYNC 4종 동시 의무 | 스크립트 누락 방지 |
-| 완료 선언 형식 | 기본 | 브라우저 실행 시나리오 3경로 필수 포함 | UI 검증 불가 환경 |
-
----
-
-## 변경 이력
-
-| 날짜 | 변경 내용 |
-|------|---------|
-| 2026-05-03 | 최초 생성 — products _governance/ 전환 작업 |
+| 일자 | 변경 |
+|------|------|
+| 2026-05-03 | 최초 생성 (외부 AEGIS 상속 기반) |
+| 2026-05-14 | **자체완결 전환** — 외부 의존 제거, 내부 5 규칙 명시, 단일 레이어 선언 |

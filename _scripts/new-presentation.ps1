@@ -169,17 +169,22 @@ created: $today
 owner: admin
 ---
 
-# $Name — AEGIS 상속 계약
+# $Name — 상속 계약 (자체완결)
 
-## 상속 계층
-- L0  D:\aegis\core\constitution\
-- L1  D:\aegis\base\
-- L2  $Target\
+## 상속 계층 (자체완결, 단일 레이어)
 
-## 상속 선언
-- 전역 헌법 전부 적용
-- PresentationBuilder _core/ SSOT 추적 (core_version_used = pres-config.json._meta)
-- _GUIDE/SKILL.md (PresentationBuilder) 트리거 키워드 자동 발동
+```
+PresentationBuilder/        ← 배포본 SSOT
+  └─ $Target/               ← 이 PPT 인스턴스
+       pres-config.json._meta로 배포본 core_version 추적
+```
+
+## 내장 규칙 (외부 헌법 미사용)
+- PB-SELF-CONTAINED: _scripts/*.ps1 자체완결
+- PB-MANIFEST-INTEGRITY: _core/MANIFEST.json sha256 정합
+- PB-PAGE-SCRIPT-SYNC: 슬라이드 4종 동시 작성
+- PB-PROMPT-STANDARD: PROMPT-STANDARDS.md 7-항목 인터뷰
+- _GUIDE/SKILL.md 트리거 키워드 자동 발동
 "@ | Set-Content (Join-Path $Target '_governance\INHERITANCE.md') -Encoding UTF8
 
 # ── 6. CLAUDE.md / CLAUDE_local.md ─────────────────────────────────────
@@ -190,23 +195,28 @@ project_code: $Name
 project_type: $Project
 created: $today
 owner: admin
-aegis_root: D:\aegis
+self_contained: true
 ---
 
 # $Name — 프로젝트 진입점
 
-> SELECTIVE-SYNC 적용 — 미기재 항목은 상위 계층에서 탐색
-> 탐색 순서: CLAUDE_local.md → D:\aegis\CLAUDE.md → ~/.claude/CLAUDE.md
+> 자체완결 — PresentationBuilder 배포본 기반. 외부 헌법 의존 없음.
 
 ## 프로젝트 개요
 - 목적: $($projMan.display_name) 발표 자료
 - 스택: HTML · CSS · JS · TTS
 - 부트스트랩: PresentationBuilder/_scripts/new-presentation.ps1
-- 빌더 자산: _core/ (PresentationBuilder SSOT 추적)
+- 빌더 자산: _core/ (PresentationBuilder SSOT 추적 — pres-config.json._meta.core_version_used)
+
+## 진입 시 자동 흐름
+1. _GUIDE/SKILL.md 발동 (트리거: "발표 만들어줘")
+2. PROMPT-STANDARDS.md 7-항목 인터뷰
+3. TOC 확정 게이트
+4. Phase 4~7 진행
 
 ## 거버넌스
-- _governance/INDEX.md
-- _governance/INHERITANCE.md
+- _governance/INDEX.md / INHERITANCE.md
+- PresentationBuilder 본 SSOT의 PROMPT-STANDARDS.md / DEPLOYMENT-POLICY.md
 "@ | Set-Content (Join-Path $Target 'CLAUDE.md') -Encoding UTF8
 
 @"

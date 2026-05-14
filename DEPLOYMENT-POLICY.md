@@ -1,7 +1,6 @@
 # 배포 정책 (DEPLOYMENT-POLICY)
 
-> PresentationBuilder 배포·재배포·자산 동기화 규칙.
-> AEGIS 헌법 [`PROJECT-GOVERNANCE`](D:/aegis/core/constitution/PROJECT-GOVERNANCE.md) 준수.
+> PresentationBuilder 배포·재배포·자산 동기화 규칙. **자체완결 — 외부 헌법 의존 없음.**
 
 ---
 
@@ -196,15 +195,17 @@ cd PresentationBuilder
 
 ---
 
-## §8. 헌법 준수 매핑
+## §8. 내부 규칙 매핑 (자체완결)
 
-| 헌법 | 적용 위치 |
-|------|----------|
-| [`PROJECT-GOVERNANCE`](D:/aegis/core/constitution/PROJECT-GOVERNANCE.md) | §1 ENV_STAGE 선언, §4 CLOSED 망 차단 |
-| [`SELF-OWNED-SERVER-RESTART`](D:/aegis/core/constitution/SELF-OWNED-SERVER-RESTART.md) | 본 배포본은 서버가 아닌 정적 자산 — 적용 없음 |
-| [`OUTPUT-FORMAT`](D:/aegis/core/constitution/OUTPUT-FORMAT.md) | 사용자 출력은 SKILL.md Phase 7에서 OUTPUT-FORMAT 준수 |
-| [`OPTIMIZATION-FIRST`](D:/aegis/core/constitution/dev_rules/OPTIMIZATION-FIRST.md) | §2 자체완결 = 외부 의존 최소화 |
-| [`CODE-REFERENCE-INTEGRITY`](D:/aegis/core/constitution/dev_rules/CODE-REFERENCE-INTEGRITY.md) | `_core/MANIFEST.json` sha256 정합 |
+본 배포본은 [`INHERITANCE.md`](INHERITANCE.md) §1에 정의된 5종 내부 규칙으로 자기 충족적이다. 외부 헌법 디렉터리에 의존하지 **않는다**.
+
+| 내부 규칙 | 정의 위치 | 강제 위치 |
+|---------|---------|---------|
+| `PB-SELF-CONTAINED` | [INHERITANCE.md §3](INHERITANCE.md) | `_scripts/*.ps1` `$PSScriptRoot` |
+| `PB-MANIFEST-INTEGRITY` | 동일 | `_core/MANIFEST.json` + `verify-manifest.ps1` |
+| `PB-PAGE-SCRIPT-SYNC` | 동일 | `_GUIDE/SKILL.md` Phase 4 |
+| `PB-DEPLOY-POLICY` | 본 문서 §7 | 본 문서 전체 |
+| `PB-PROMPT-STANDARD` | [PROMPT-STANDARDS.md](PROMPT-STANDARDS.md) | LLM 호출 표준 |
 
 ---
 
