@@ -2,6 +2,9 @@
 
 LLM(Claude / ChatGPT 등)에게 본 빌더로 발표를 만들도록 지시하는 방법.
 
+> 핵심 SSOT: [`_GUIDE/SKILL.md`](_GUIDE/SKILL.md) (Phase 0~7 전체 명세) · [PROMPT-STANDARDS.md](PROMPT-STANDARDS.md) (프롬프트 표준)
+> 관련: [QUICKSTART.md](QUICKSTART.md) · [PREREQUISITES.md](PREREQUISITES.md) · [DEPLOYMENT-POLICY.md](DEPLOYMENT-POLICY.md)
+
 ---
 
 ## 큰 그림

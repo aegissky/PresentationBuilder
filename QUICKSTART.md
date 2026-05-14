@@ -2,6 +2,8 @@
 
 PresentationBuilder로 새 발표 자료를 만드는 가장 짧은 경로.
 
+> 관련 문서: [PREREQUISITES.md](PREREQUISITES.md) · [LLM-WORKFLOW.md](LLM-WORKFLOW.md) · [PROMPT-STANDARDS.md](PROMPT-STANDARDS.md) · [`_GUIDE/SKILL.md`](_GUIDE/SKILL.md)
+
 ---
 
 ## Step 1 — 새 프로젝트 부트스트랩 (10초)

@@ -1,26 +1,40 @@
 # PresentationBuilder Master Skill
 <!-- [INSTR 2026-04-30] 착수보고회 전체 방법론 → 범용 발표 시스템 자동 생성 스킬 -->
+<!-- [UPDATE 2026-05-14] 자체완결 전환 — 절대경로 제거, PROMPT-STANDARDS 연결 -->
 
-> **버전**: 2.0 · **기준 프로젝트**: D:/projects/products/Presentations (착수보고회)  
-> **트리거**: "발표 만들어줘" / "프리젠테이션 생성" / "보고서 슬라이드" / "PresentationBuilder"  
+> **버전**: 2.1 · **자체완결** (외부 경로 의존 없음)
+> **트리거**: "발표 만들어줘" / "프리젠테이션 생성" / "보고서 슬라이드" / "PresentationBuilder"
 > **원칙**: 분석 → 설계 → 생성 → 검증 4단계를 반드시 순서대로 실행. 단계 건너뜀 금지.
 
 ---
 
 ## 스킬 로드 시 필수 선행 읽기
 
-이 스킬 실행 전, CLAUDE는 아래 파일들을 반드시 읽는다:
+이 스킬 실행 전, LLM은 아래 파일들을 반드시 읽는다 (모두 PresentationBuilder 루트 기준 상대경로):
 
 ```
-1. D:/projects/products/PresentationBuilder/requirements/PRESENTATION-BUILDER-SPEC.md
+1. PROMPT-STANDARDS.md
+   → LLM 호출 표준 — 7-항목 인터뷰 / TOC 게이트 / 4종 동시 / 완료 보고 형식
+   → PB-PROMPT-STANDARD 규칙의 SSOT
+
+2. requirements/PRESENTATION-BUILDER-SPEC.md
    → HTML 템플릿·CSS 변수·컴포넌트 전체 명세
 
-2. D:/projects/products/PresentationBuilder/_GUIDE/pres-config.template.json
+3. _GUIDE/pres-config.template.json
    → 설정 파일 구조
 
-3. (존재하면) 출력 경로/pres-config.json
-   → 사용자 프로젝트 설정
+4. _core/features.manifest.json
+   → 화면 단위 공통 기능 8 모듈 카탈로그 + loading_order
+
+5. (있으면) 인스턴스 pres-config.json
+   → 사용자 프로젝트 설정 + features.* 토글
 ```
+
+### 연관 거버넌스 문서
+
+- `INHERITANCE.md` — 자체완결 5 내부 규칙 (PB-SELF-CONTAINED 등)
+- `DEPLOYMENT-POLICY.md` — 배포·동기화·버전 정책
+- `CLAUDE.md` / `CLAUDE_local.md` — LLM 도구 진입점
 
 ---
 
